@@ -3,12 +3,12 @@
 /**
  * Class ControllerPaymentIngIdeal
  */
-class ControllerExtensionPaymentIngpspIdeal extends Controller
+class ControllerExtensionPaymentEmspayIdeal extends Controller
 {
     /**
      * Prefix for fields in admin settings page
      */
-    const POST_FIELD_PREFIX = 'ing_';
+    const POST_FIELD_PREFIX = 'ems_';
 
     /**
      * @var array
@@ -35,18 +35,18 @@ class ControllerExtensionPaymentIngpspIdeal extends Controller
     ];
 
     /**
-     * @var array ING PSP list of available products
+     * @var array EMS PSP list of available products
      */
     static $psp_products = [
         'kassacompleet' => 'Kassa Compleet',
-        'ingcheckout' => 'ING Checkout',
-        'epay' => 'ING ePay'
+        'emscheckout' => 'EMS Checkout',
+        'epay' => 'EMS ePay'
     ];
 
     /**
      * @var string
      */
-    private $ingModuleName;
+    private $emsModuleName;
 
     /**
      * @var array
@@ -54,13 +54,13 @@ class ControllerExtensionPaymentIngpspIdeal extends Controller
     private $error = array();
 
     /**
-     * @param string $ingModuleName
+     * @param string $emsModuleName
      */
-    public function index($ingModuleName = 'ingpsp_ideal')
+    public function index($emsModuleName = 'emspay_ideal')
     {
-        $this->setModuleName($ingModuleName);
+        $this->setModuleName($emsModuleName);
 
-        $this->language->load('extension/payment/'.$ingModuleName);
+        $this->language->load('extension/payment/'.$emsModuleName);
         $this->load->model('setting/setting');
         $this->load->model('localisation/order_status');
 
@@ -79,9 +79,9 @@ class ControllerExtensionPaymentIngpspIdeal extends Controller
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');
-        $data['ingpsp_module'] = $this->getModuleName();
+        $data['emspay_module'] = $this->getModuleName();
 
-        $this->response->setOutput($this->load->view('extension/payment/ingpsp', $data));
+        $this->response->setOutput($this->load->view('extension/payment/emspay', $data));
     }
 
     /**
@@ -121,14 +121,14 @@ class ControllerExtensionPaymentIngpspIdeal extends Controller
     {
         return [
             'heading_title' => $this->language->get('heading_title'),
-            'text_edit_ing' => $this->language->get('text_edit_ing'),
+            'text_edit_ems' => $this->language->get('text_edit_ems'),
             'info_help_api_key' => $this->language->get('info_help_api_key'),
             'info_help_klarna_ip_filter' => $this->language->get('info_help_klarna_ip_filter'),
             'info_help_klarna_test_api_key' => $this->language->get('info_help_klarna_test_api_key'),
             'info_help_afterpay_ip_filter' => $this->language->get('info_help_afterpay_ip_filter'),
             'info_help_afterpay_test_api_key' => $this->language->get('info_help_afterpay_test_api_key'),
             'info_help_total' => $this->language->get('info_help_total'),
-            'entry_ing_api_key' => $this->language->get('entry_ing_api_key'),
+            'entry_ems_api_key' => $this->language->get('entry_ems_api_key'),
             'entry_order_completed' => $this->language->get('entry_order_completed'),
             'entry_order_new' => $this->language->get('entry_order_new'),
             'entry_order_error' => $this->language->get('entry_order_error'),
@@ -138,8 +138,8 @@ class ControllerExtensionPaymentIngpspIdeal extends Controller
             'entry_order_captured' => $this->language->get('entry_order_captured'),
             'entry_sort_order' => $this->language->get('entry_sort_order'),
             'entry_status' => $this->language->get('entry_status'),
-            'entry_ing_total' => $this->language->get('entry_ing_total'),
-            'entry_ing_product' =>  $this->language->get('entry_ing_product'),
+            'entry_ems_total' => $this->language->get('entry_ems_total'),
+            'entry_ems_product' =>  $this->language->get('entry_ems_product'),
             'entry_cacert' =>  $this->language->get('entry_cacert'),
             'entry_send_webhook' =>  $this->language->get('entry_send_webhook'),
             'entry_klarna_ip_filter' => $this->language->get('entry_klarna_ip_filter'),
@@ -245,11 +245,11 @@ class ControllerExtensionPaymentIngpspIdeal extends Controller
 
 
     /**
-     * @param string $ingModuleName
+     * @param string $emsModuleName
      */
-    protected function setModuleName($ingModuleName)
+    protected function setModuleName($emsModuleName)
     {
-        $this->ingModuleName = $ingModuleName;
+        $this->emsModuleName = $emsModuleName;
     }
 
     /**
@@ -257,7 +257,7 @@ class ControllerExtensionPaymentIngpspIdeal extends Controller
      */
     protected function getModuleName()
     {
-        return $this->ingModuleName;
+        return $this->emsModuleName;
     }
 
     /**
