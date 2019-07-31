@@ -36,7 +36,6 @@ final class PaymentMethod
             self::COD,
             self::KLARNA,
             self::PAYPAL,
-            self::HOMEPAY,
             self::PAYCONIQ,
             self::AFTERPAY
         ];
@@ -104,14 +103,6 @@ final class PaymentMethod
     public function isPayPal()
     {
         return $this->value === self::PAYPAL;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isHomePay()
-    {
-        return $this->value === self::HOMEPAY;
     }
     
     /**
