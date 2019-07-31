@@ -5,11 +5,11 @@
     <div class="page-header">
         <div class="container-fluid">
             <div class="pull-right">
-                <button type="submit" form="form-ing" data-toggle="tooltip" title="<?php echo $button_save; ?>"
+                <button type="submit" form="form-ems" data-toggle="tooltip" title="<?php echo $button_save; ?>"
                         class="btn btn-primary"><i class="fa fa-save"></i></button>
                 <a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>"
                    class="btn btn-default"><i class="fa fa-reply"></i></a></div>
-            <h1><?php echo $heading_title; ?></h1>
+            <h1><?php echo $headems_title; ?></h1>
             <ul class="breadcrumb">
                 <?php foreach ($breadcrumbs as $breadcrumb) { ?>
                 <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
@@ -33,40 +33,40 @@
 
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title"><i class="fa fa-pencil"></i> <?php echo $text_edit_ing; ?></h3>
+                <h3 class="panel-title"><i class="fa fa-pencil"></i> <?php echo $text_edit_ems; ?></h3>
             </div>
 
             <div class="panel-body">
-                <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-ing"
+                <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-ems"
                       class="form-horizontal">
 
                     <div class="form-group required">
                         <label class="col-sm-2 control-label"
-                               for="input-ing-api-key">
+                               for="input-ems-api-key">
                             <span data-toggle="tooltip" title="<?php echo $info_help_api_key; ?>">
-                                <?php echo $entry_ing_api_key; ?>
+                                <?php echo $entry_ems_api_key; ?>
                             </span>
                         </label>
                         <div class="col-sm-10">
-                            <input type="text" name="ing_api_key" id="input-ing-api-key"
-                                   value="<?php echo $ing_api_key; ?>" size="50" class="form-control"
+                            <input type="text" name="ems_api_key" id="input-ems-api-key"
+                                   value="<?php echo $ems_api_key; ?>" size="50" class="form-control"
                                    placeholder="<?php echo $info_help_api_key; ?>"/>
-                            <?php if ($error_missing_api_key) { ?>
-                            <div class="text-danger"><?php echo $error_missing_api_key; ?></div>
+                            <?php if ($error_missems_api_key) { ?>
+                            <div class="text-danger"><?php echo $error_missems_api_key; ?></div>
                             <?php } ?>
                         </div>
                     </div>
 
-                    <?php if ($ingpsp_module == 'ingpsp_klarna'): ?>
+                    <?php if ($emspay_module == 'emspay_klarna'): ?>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label" for="input-ing-klarna-test-api-key">
+                        <label class="col-sm-2 control-label" for="input-ems-klarna-test-api-key">
                             <span data-toggle="tooltip" title="<?php echo $info_help_klarna_test_api_key; ?>">
                                 <?php echo $entry_klarna_test_api_key; ?>
                             </span>
                         </label>
                         <div class="col-sm-10">
-                            <input type="text" name="ing_klarna_test_api_key" id="input-ing-klarna-test-api-key"
-                                   value="<?php echo $ing_klarna_test_api_key; ?>" size="50" class="form-control"
+                            <input type="text" name="ems_klarna_test_api_key" id="input-ems-klarna-test-api-key"
+                                   value="<?php echo $ems_klarna_test_api_key; ?>" size="50" class="form-control"
                                    placeholder="<?php echo $info_help_klarna_test_api_key; ?>"/>
                         </div>
                     </div>
@@ -77,24 +77,24 @@
                             </span>
                         </label>
                         <div class="col-sm-10">
-                            <input type="text" name="ing_klarna_ip_filter"
-                                   value="<?php echo $ing_klarna_ip_filter; ?>"
-                                   placeholder="<?php echo $ing_klarna_ip_filter; ?>"
+                            <input type="text" name="ems_klarna_ip_filter"
+                                   value="<?php echo $ems_klarna_ip_filter; ?>"
+                                   placeholder="<?php echo $ems_klarna_ip_filter; ?>"
                                    id="input-klarna-ip-filter" class="form-control" />
                         </div>
                     </div>
                     <?php endif; ?>
                     
-                    <?php if ($ingpsp_module == 'ingpsp_afterpay'): ?>
+                    <?php if ($emspay_module == 'emspay_afterpay'): ?>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label" for="input-ing-afterpay-test-api-key">
+                        <label class="col-sm-2 control-label" for="input-ems-afterpay-test-api-key">
                             <span data-toggle="tooltip" title="<?php echo $info_help_afterpay_test_api_key; ?>">
                                 <?php echo $entry_afterpay_test_api_key; ?>
                             </span>
                         </label>
                         <div class="col-sm-10">
-                            <input type="text" name="ing_afterpay_test_api_key" id="input-ing-afterpay-test-api-key"
-                                   value="<?php echo $ing_afterpay_test_api_key; ?>" size="50" class="form-control"
+                            <input type="text" name="ems_afterpay_test_api_key" id="input-ems-afterpay-test-api-key"
+                                   value="<?php echo $ems_afterpay_test_api_key; ?>" size="50" class="form-control"
                                    placeholder="<?php echo $info_help_afterpay_test_api_key; ?>"/>
                         </div>
                     </div>
@@ -105,23 +105,23 @@
                             </span>
                         </label>
                         <div class="col-sm-10">
-                            <input type="text" name="ing_afterpay_ip_filter"
-                                   value="<?php echo $ing_afterpay_ip_filter; ?>"
-                                   placeholder="<?php echo $ing_afterpay_ip_filter; ?>"
+                            <input type="text" name="ems_afterpay_ip_filter"
+                                   value="<?php echo $ems_afterpay_ip_filter; ?>"
+                                   placeholder="<?php echo $ems_afterpay_ip_filter; ?>"
                                    id="input-afterpay-ip-filter" class="form-control" />
                         </div>
                     </div>
                     <?php endif; ?>
 
                     <div class="form-group required">
-                        <label class="col-sm-2 control-label" for="input-ing-product">
-                            <?php echo $entry_ing_product; ?>
+                        <label class="col-sm-2 control-label" for="input-ems-product">
+                            <?php echo $entry_ems_product; ?>
                         </label>
                         <div class="col-sm-10">
-                            <select name="ing_psp_product" class="form-control"
-                                    id="input-ing_psp_product">
+                            <select name="ems_psp_product" class="form-control"
+                                    id="input-ems_psp_product">
                                 <?php foreach ($psp_products as $value => $title) { ?>
-                                <?php if ($value == $ing_psp_product) { ?>
+                                <?php if ($value == $ems_psp_product) { ?>
                                 <option value="<?php echo $value; ?>"
                                         selected="selected"><?php echo $title; ?></option>
                                 <?php } else { ?>
@@ -134,12 +134,12 @@
 
                     <div class="form-group">
                         <label class="col-sm-2 control-label"
-                               for="input-ing_order_status_id_new"><?php echo $entry_order_new; ?></label>
+                               for="input-ems_order_status_id_new"><?php echo $entry_order_new; ?></label>
                         <div class="col-sm-10">
-                            <select name="ing_order_status_id_new" class="form-control"
-                                    id="input-ing_order_status_id_new">
+                            <select name="ems_order_status_id_new" class="form-control"
+                                    id="input-ems_order_status_id_new">
                                 <?php foreach ($order_statuses as $order_status) { ?>
-                                <?php if ($order_status['order_status_id'] == $ing_order_status_id_new) { ?>
+                                <?php if ($order_status['order_status_id'] == $ems_order_status_id_new) { ?>
                                 <option value="<?php echo $order_status['order_status_id']; ?>"
                                         selected="selected"><?php echo $order_status['name']; ?></option>
                                 <?php } else { ?>
@@ -152,12 +152,12 @@
 
                     <div class="form-group">
                         <label class="col-sm-2 control-label"
-                               for="input-ing_order_status_id_processing"><?php echo $entry_order_processing; ?></label>
+                               for="input-ems_order_status_id_processing"><?php echo $entry_order_processing; ?></label>
                         <div class="col-sm-10">
-                            <select name="ing_order_status_id_processing" class="form-control"
-                                    id="input-ing_order_status_id_processing">
+                            <select name="ems_order_status_id_processing" class="form-control"
+                                    id="input-ems_order_status_id_processing">
                                 <?php foreach ($order_statuses as $order_status) { ?>
-                                <?php if ($order_status['order_status_id'] == $ing_order_status_id_processing) { ?>
+                                <?php if ($order_status['order_status_id'] == $ems_order_status_id_processing) { ?>
                                 <option value="<?php echo $order_status['order_status_id']; ?>"
                                         selected="selected"><?php echo $order_status['name']; ?></option>
                                 <?php } else { ?>
@@ -170,12 +170,12 @@
 
                     <div class="form-group">
                         <label class="col-sm-2 control-label"
-                               for="input-ing_order_status_id_completed"><?php echo $entry_order_completed; ?></label>
+                               for="input-ems_order_status_id_completed"><?php echo $entry_order_completed; ?></label>
                         <div class="col-sm-10">
-                            <select name="ing_order_status_id_completed" class="form-control"
-                                    id="input-ing_order_status_id_completed">
+                            <select name="ems_order_status_id_completed" class="form-control"
+                                    id="input-ems_order_status_id_completed">
                                 <?php foreach ($order_statuses as $order_status) { ?>
-                                <?php if ($order_status['order_status_id'] == $ing_order_status_id_completed) { ?>
+                                <?php if ($order_status['order_status_id'] == $ems_order_status_id_completed) { ?>
                                 <option value="<?php echo $order_status['order_status_id']; ?>"
                                         selected="selected"><?php echo $order_status['name']; ?></option>
                                 <?php } else { ?>
@@ -188,12 +188,12 @@
 
                     <div class="form-group">
                         <label class="col-sm-2 control-label"
-                               for="input-ing_order_status_id_expired"><?php echo $entry_order_expired; ?></label>
+                               for="input-ems_order_status_id_expired"><?php echo $entry_order_expired; ?></label>
                         <div class="col-sm-10">
-                            <select name="ing_order_status_id_expired" class="form-control"
-                                    id="input-ing_order_status_id_expired">
+                            <select name="ems_order_status_id_expired" class="form-control"
+                                    id="input-ems_order_status_id_expired">
                                 <?php foreach ($order_statuses as $order_status) { ?>
-                                <?php if ($order_status['order_status_id'] == $ing_order_status_id_expired) { ?>
+                                <?php if ($order_status['order_status_id'] == $ems_order_status_id_expired) { ?>
                                 <option value="<?php echo $order_status['order_status_id']; ?>"
                                         selected="selected"><?php echo $order_status['name']; ?></option>
                                 <?php } else { ?>
@@ -206,12 +206,12 @@
 
                     <div class="form-group">
                         <label class="col-sm-2 control-label"
-                               for="input-ing_order_status_id_cancelled"><?php echo $entry_order_cancelled; ?></label>
+                               for="input-ems_order_status_id_cancelled"><?php echo $entry_order_cancelled; ?></label>
                         <div class="col-sm-10">
-                            <select name="ing_order_status_id_cancelled" class="form-control"
-                                    id="input-ing_order_status_id_cancelled">
+                            <select name="ems_order_status_id_cancelled" class="form-control"
+                                    id="input-ems_order_status_id_cancelled">
                                 <?php foreach ($order_statuses as $order_status) { ?>
-                                <?php if ($order_status['order_status_id'] == $ing_order_status_id_cancelled) { ?>
+                                <?php if ($order_status['order_status_id'] == $ems_order_status_id_cancelled) { ?>
                                 <option value="<?php echo $order_status['order_status_id']; ?>"
                                         selected="selected"><?php echo $order_status['name']; ?></option>
                                 <?php } else { ?>
@@ -224,12 +224,12 @@
 
                     <div class="form-group">
                         <label class="col-sm-2 control-label"
-                               for="input-ing_order_status_id_error"><?php echo $entry_order_error; ?></label>
+                               for="input-ems_order_status_id_error"><?php echo $entry_order_error; ?></label>
                         <div class="col-sm-10">
-                            <select name="ing_order_status_id_error" class="form-control"
-                                    id="input-ing_order_status_id_error">
+                            <select name="ems_order_status_id_error" class="form-control"
+                                    id="input-ems_order_status_id_error">
                                 <?php foreach ($order_statuses as $order_status) { ?>
-                                <?php if ($order_status['order_status_id'] == $ing_order_status_id_error) { ?>
+                                <?php if ($order_status['order_status_id'] == $ems_order_status_id_error) { ?>
                                 <option value="<?php echo $order_status['order_status_id']; ?>"
                                         selected="selected"><?php echo $order_status['name']; ?></option>
                                 <?php } else { ?>
@@ -242,12 +242,12 @@
 
                     <div class="form-group">
                         <label class="col-sm-2 control-label"
-                               for="input-ing_order_status_id_captured"><?php echo $entry_order_captured; ?></label>
+                               for="input-ems_order_status_id_captured"><?php echo $entry_order_captured; ?></label>
                         <div class="col-sm-10">
-                            <select name="ing_order_status_id_captured" class="form-control"
-                                    id="input-ing_order_status_id_captured">
+                            <select name="ems_order_status_id_captured" class="form-control"
+                                    id="input-ems_order_status_id_captured">
                                 <?php foreach ($order_statuses as $order_status) { ?>
-                                <?php if ($order_status['order_status_id'] == $ing_order_status_id_captured) { ?>
+                                <?php if ($order_status['order_status_id'] == $ems_order_status_id_captured) { ?>
                                 <option value="<?php echo $order_status['order_status_id']; ?>"
                                         selected="selected"><?php echo $order_status['name']; ?></option>
                                 <?php } else { ?>
@@ -262,34 +262,34 @@
                         <label class="col-sm-2 control-label"
                                for="input-sort-order"><?php echo $entry_sort_order; ?></label>
                         <div class="col-sm-10">
-                            <input type="text" name="ing_sort_order"
-                                   value="<?php echo $ing_sort_order; ?>"
-                                   placeholder="<?php echo $ing_sort_order; ?>"
+                            <input type="text" name="ems_sort_order"
+                                   value="<?php echo $ems_sort_order; ?>"
+                                   placeholder="<?php echo $ems_sort_order; ?>"
                                    id="input-sort-order" class="form-control"/>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-sm-2 control-label"
-                               for="input-ing-total">
+                               for="input-ems-total">
                              <span data-toggle="tooltip" title="<?php echo $info_help_total; ?>">
-                                   <?php echo $entry_ing_total; ?>
+                                   <?php echo $entry_ems_total; ?>
                             </span>
                         </label>
                         <div class="col-sm-10">
-                            <input type="text" name="ing_total"
-                                   value="<?php echo $ing_total; ?>"
+                            <input type="text" name="ems_total"
+                                   value="<?php echo $ems_total; ?>"
                                    placeholder="<?php echo $info_help_total; ?>"
-                                   id="input-ing-total" class="form-control"/>
+                                   id="input-ems-total" class="form-control"/>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-sm-2 control-label"
-                               for="input-ing-status"><?php echo $entry_status; ?></label>
+                               for="input-ems-status"><?php echo $entry_status; ?></label>
                         <div class="col-sm-10">
-                            <select name="ing_status" id="input-ing-status" class="form-control">
-                                <?php if ($ing_status) { ?>
+                            <select name="ems_status" id="input-ems-status" class="form-control">
+                                <?php if ($ems_status) { ?>
                                 <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
                                 <option value="0"><?php echo $text_disabled; ?></option>
                                 <?php } else { ?>
@@ -304,13 +304,13 @@
                         <label class="col-sm-2 control-label"><?php echo $entry_cacert; ?></label>
                         <div class="col-sm-10">
                             <label class="radio-inline">
-                                <input type="radio" name="ing_bundle_cacert" value="1"
-                                <?php if ($ing_bundle_cacert) { ?> checked="checked" <?php } ?> />
+                                <input type="radio" name="ems_bundle_cacert" value="1"
+                                <?php if ($ems_bundle_cacert) { ?> checked="checked" <?php } ?> />
                                 <?php echo $text_yes; ?>
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="ing_bundle_cacert" value="0"
-                                <?php if (!$ing_bundle_cacert) { ?> checked="checked" <?php } ?> />
+                                <input type="radio" name="ems_bundle_cacert" value="0"
+                                <?php if (!$ems_bundle_cacert) { ?> checked="checked" <?php } ?> />
                                 <?php echo $text_no; ?>
                             </label>
                         </div>
@@ -320,13 +320,13 @@
                         <label class="col-sm-2 control-label"><?php echo $entry_send_webhook; ?></label>
                         <div class="col-sm-10">
                             <label class="radio-inline">
-                                <input type="radio" name="ing_send_webhook" value="1"
-                                <?php if ($ing_send_webhook) { ?> checked="checked" <?php } ?> />
+                                <input type="radio" name="ems_send_webhook" value="1"
+                                <?php if ($ems_send_webhook) { ?> checked="checked" <?php } ?> />
                                 <?php echo $text_yes; ?>
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="ing_send_webhook" value="0"
-                                <?php if (!$ing_send_webhook) { ?> checked="checked" <?php } ?> />
+                                <input type="radio" name="ems_send_webhook" value="0"
+                                <?php if (!$ems_send_webhook) { ?> checked="checked" <?php } ?> />
                                 <?php echo $text_no; ?>
                             </label>
                         </div>
