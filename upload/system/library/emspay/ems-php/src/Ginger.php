@@ -35,7 +35,7 @@ final class Ginger
     {
         Guard::uuid(
             static::apiKeyToUuid($apiKey),
-            'ING API key is invalid: '.$apiKey
+            'EMS API key is invalid: '.$apiKey
         );
 
         if (!static::validPHPVersion()) {
@@ -51,7 +51,7 @@ final class Ginger
                     ],
                     'defaults' => [
                         'headers' => [
-                            'User-Agent' => 'ing-php/'.self::CLIENT_VERSION,
+                            'User-Agent' => 'ems-php/'.self::CLIENT_VERSION,
                             'X-PHP-Version' => PHP_VERSION
                         ],
                         'auth' => [$apiKey, '']
@@ -72,8 +72,8 @@ final class Ginger
         switch ($product) {
             case 'kassacompleet':
                 return (new Client\EndpointResolver())->getEndpointKassa();
-            case 'ingcheckout':
-                return (new Client\EndpointResolver())->getEndpointIng();
+            case 'emscheckout':
+                return (new Client\EndpointResolver())->getEndpointEms();
             case 'epay':
                 return (new Client\EndpointResolver())->getEndpointEpay();
             default:

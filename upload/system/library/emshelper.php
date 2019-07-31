@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Class IngHelper
+ * Class EmsHelper
  */
-class IngHelper
+class EmsHelper
 {
     /**
-     * ING PSP OpenCart plugin version
+     * EMS PAY OpenCart plugin version
      */
     const PLUGIN_VERSION = '1.4.8';
 
@@ -21,22 +21,22 @@ class IngHelper
     protected $paymentMethod;
 
     /**
-     * ING PSP Order statuses
+     * EMS PAY Order statuses
      */
-    const ING_STATUS_EXPIRED = 'expired';
-    const ING_STATUS_NEW = 'new';
-    const ING_STATUS_PROCESSING = 'processing';
-    const ING_STATUS_COMPLETED = 'completed';
-    const ING_STATUS_CANCELLED = 'cancelled';
-    const ING_STATUS_ERROR = 'error';
-    const ING_STATUS_CAPTURED = 'captured';
+    const EMS_STATUS_EXPIRED = 'expired';
+    const EMS_STATUS_NEW = 'new';
+    const EMS_STATUS_PROCESSING = 'processing';
+    const EMS_STATUS_COMPLETED = 'completed';
+    const EMS_STATUS_CANCELLED = 'cancelled';
+    const EMS_STATUS_ERROR = 'error';
+    const EMS_STATUS_CAPTURED = 'captured';
 
     /**
      * @param string $paymentMethod
      */
     public function __construct($paymentMethod)
     {
-        require_once(DIR_SYSTEM.'library/ingpsp/ing-php/vendor/autoload.php');
+        require_once(DIR_SYSTEM.'library/emspay/ems-php/vendor/autoload.php');
 
         $this->paymentMethod = $paymentMethod;
     }
@@ -49,7 +49,7 @@ class IngHelper
     {
         return $this->getGignerClinet(
                 $config->get($this->getPaymentSettingsFieldName('api_key')),
-                $config->get($this->getPaymentSettingsFieldName('psp_product')),
+                $config->get($this->getPaymentSettingsFieldName('pay_product')),
                 $config->get($this->getPaymentSettingsFieldName('bundle_cacert'))
                );
     }
@@ -63,7 +63,7 @@ class IngHelper
         return $this->getGignerClinet(
                 $config->get($this->getPaymentSettingsFieldName('afterpay_test_api_key'))
                 ?: $config->get($this->getPaymentSettingsFieldName('api_key')),
-                $config->get($this->getPaymentSettingsFieldName('psp_product')),
+                $config->get($this->getPaymentSettingsFieldName('pay_product')),
                 $config->get($this->getPaymentSettingsFieldName('bundle_cacert'))
                );
     }
@@ -77,7 +77,7 @@ class IngHelper
         return $this->getGignerClinet(
                 $config->get($this->getPaymentSettingsFieldName('klarna_test_api_key'))
                 ?: $config->get($this->getPaymentSettingsFieldName('api_key')),
-                $config->get($this->getPaymentSettingsFieldName('psp_product')),
+                $config->get($this->getPaymentSettingsFieldName('pay_product')),
                 $config->get($this->getPaymentSettingsFieldName('bundle_cacert'))
                );
     }
@@ -93,43 +93,43 @@ class IngHelper
      */
     protected function getGignerClinet($apiKey, $product, $useBundle = false)
     {
-        $ing = \GingerPayments\Payment\Ginger::createClient($apiKey, $product);
+        $ems = \GingerPayments\Payment\Ginger::createClient($apiKey, $product);
 
         if ($useBundle) {
-            $ing->useBundledCA();
+            $ems->useBundledCA();
         }
 
-        return $ing;
+        return $ems;
     }
 
     /**
-     * Method maps ING PSP order status to OpenCart specific
+     * Method maps EMS PAY order status to OpenCart specific
      *
-     * @param string $ingOrderStatus
+     * @param string $emsOrderStatus
      * @return string
      */
-    public function getOrderStatus($ingOrderStatus, $config)
+    public function getOrderStatus($emsOrderStatus, $config)
     {
-        switch ($ingOrderStatus) {
-            case IngHelper::ING_STATUS_NEW:
+        switch ($emsOrderStatus) {
+            case EmsHelper::EMS_STATUS_NEW:
                 $orderStatus = $config->get($this->getPaymentSettingsFieldName('order_status_id_new'));
                 break;
-            case IngHelper::ING_STATUS_EXPIRED:
+            case EmsHelper::EMS_STATUS_EXPIRED:
                 $orderStatus = $config->get($this->getPaymentSettingsFieldName('order_status_id_expired'));
                 break;
-            case IngHelper::ING_STATUS_PROCESSING:
+            case EmsHelper::EMS_STATUS_PROCESSING:
                 $orderStatus = $config->get($this->getPaymentSettingsFieldName('order_status_id_processing'));
                 break;
-            case IngHelper::ING_STATUS_COMPLETED:
+            case EmsHelper::EMS_STATUS_COMPLETED:
                 $orderStatus = $config->get($this->getPaymentSettingsFieldName('order_status_id_completed'));
                 break;
-            case IngHelper::ING_STATUS_CANCELLED:
+            case EmsHelper::EMS_STATUS_CANCELLED:
                 $orderStatus = $config->get($this->getPaymentSettingsFieldName('order_status_id_cancelled'));
                 break;
-            case IngHelper::ING_STATUS_ERROR:
+            case EmsHelper::EMS_STATUS_ERROR:
                 $orderStatus = $config->get($this->getPaymentSettingsFieldName('order_status_id_error'));
                 break;
-            case IngHelper::ING_STATUS_CAPTURED:
+            case EmsHelper::EMS_STATUS_CAPTURED:
                 $orderStatus = $config->get($this->getPaymentSettingsFieldName('order_status_id_captured'));
                 break;
             default:
@@ -194,7 +194,7 @@ class IngHelper
      */
     public function getOrderDescription($orderId, $paymentMethod)
     {
-        $paymentMethod->language->load('extension/payment/ingpsp_common');
+        $paymentMethod->language->load('extension/payment/ingpay_common');
   
         return sprintf($paymentMethod->language->get('text_your_order_at'), $orderId, $paymentMethod->config->get('config_name'));
     }
@@ -291,13 +291,13 @@ class IngHelper
     public function processWebhook($paymentMethod, array $webhookData)
     {
         if ($webhookData['event'] == 'status_changed') {
-            $ingOrder = $paymentMethod->ing->getOrder($webhookData['order_id']);
-            $orderInfo = $paymentMethod->model_checkout_order->getOrder($ingOrder->getMerchantOrderId());
+            $emsOrder = $paymentMethod->ems->getOrder($webhookData['order_id']);
+            $orderInfo = $paymentMethod->model_checkout_order->getOrder($emsOrder->getMerchantOrderId());
             if ($orderInfo) {
                 $paymentMethod->model_checkout_order->addOrderHistory(
-                    $ingOrder->getMerchantOrderId(),
-                    $paymentMethod->ingHelper->getOrderStatus($ingOrder->getStatus(), $paymentMethod->config),
-                    'Status changed for order: '.$ingOrder->id()->toString(),
+                    $emsOrder->getMerchantOrderId(),
+                    $paymentMethod->ingHelper->getOrderStatus($emsOrder->getStatus(), $paymentMethod->config),
+                    'Status changed for order: '.$emsOrder->id()->toString(),
                     true
                 );
             }
@@ -312,10 +312,10 @@ class IngHelper
     public function checkStatusAjax($paymentMethod)
     {
         $orderId = $paymentMethod->request->get['order_id'];
-        $ingOrder = $paymentMethod->ing->getOrder($orderId);
+        $emsOrder = $paymentMethod->ems->getOrder($orderId);
 
-        if ($ingOrder->status()->isProcessing()
-            || $ingOrder->status()->isNew()
+        if ($emsOrder->status()->isProcessing()
+            || $emsOrder->status()->isNew()
         ) {
             $response = [
                 'redirect' => false
@@ -341,7 +341,7 @@ class IngHelper
 
         return $paymentMethod->response->setOutput(
             $paymentMethod->load->view(
-                'extension/payment/ingpsp_processing',
+                'extension/payment/ingpay_processing',
                 $this->getPageData($paymentMethod)
             )
         );
@@ -355,7 +355,7 @@ class IngHelper
     {
         return $paymentMethod->response->setOutput(
             $paymentMethod->load->view(
-                'extension/payment/ingpsp_pending',
+                'extension/payment/ingpay_pending',
                 $this->getPageData($paymentMethod)
             )
         );
@@ -369,7 +369,7 @@ class IngHelper
     {
         $paymentMethod->load->language('extension/payment/'.$this->paymentMethod);
         $paymentMethod->load->language('checkout/success');
-        $paymentMethod->load->language('extension/payment/ingpsp_common');
+        $paymentMethod->load->language('extension/payment/ingpay_common');
 
         return [
             'breadcrumbs' => $this->getBreadcrumbs($paymentMethod),
@@ -401,8 +401,8 @@ class IngHelper
      */
     protected function getOrderIdFromPaymentMethod($paymentMethod)
     {
-        $ingOrder = $paymentMethod->ing->getOrder($paymentMethod->request->get['order_id']);
-        return (!empty($ingOrder) && $ingOrder->getMerchantOrderId() !== null) ? $ingOrder->getMerchantOrderId() : '';
+        $emsOrder = $paymentMethod->ems->getOrder($paymentMethod->request->get['order_id']);
+        return (!empty($emsOrder) && $emsOrder->getMerchantOrderId() !== null) ? $emsOrder->getMerchantOrderId() : '';
     }
     
     /**
@@ -411,18 +411,18 @@ class IngHelper
     public function loadCallbackFunction($paymentMethod)
     {
         $paymentMethod->load->model('checkout/order');
-        $ingOrder = $paymentMethod->ing->getOrder($paymentMethod->request->get['order_id']);
-        $orderInfo = $paymentMethod->model_checkout_order->getOrder($ingOrder->getMerchantOrderId());
+        $emsOrder = $paymentMethod->ems->getOrder($paymentMethod->request->get['order_id']);
+        $orderInfo = $paymentMethod->model_checkout_order->getOrder($emsOrder->getMerchantOrderId());
         if ($orderInfo) {
             $paymentMethod->model_checkout_order->addOrderHistory(
-                $ingOrder->getMerchantOrderId(),
-                $paymentMethod->ingHelper->getOrderStatus($ingOrder->getStatus(), $paymentMethod->config),
-                'ING PSP order: '.$ingOrder->id()->toString(),
+                $emsOrder->getMerchantOrderId(),
+                $paymentMethod->ingHelper->getOrderStatus($emsOrder->getStatus(), $paymentMethod->config),
+                'EMS PAY order: '.$emsOrder->id()->toString(),
                 true
             );
-            if ($ingOrder->status()->isCompleted()) {
+            if ($emsOrder->status()->isCompleted()) {
                 $paymentMethod->response->redirect($this->getSucceedUrl($paymentMethod, $orderInfo['order_id']));
-            } elseif ($ingOrder->status()->isProcessing() || $ingOrder->status()->isNew()) {
+            } elseif ($emsOrder->status()->isProcessing() || $emsOrder->status()->isNew()) {
                 $paymentMethod->response->redirect($paymentMethod->ingHelper->getProcessingUrl($paymentMethod));
             } else {
                 $paymentMethod->response->redirect($this->getFailureUrl($paymentMethod, $orderInfo['order_id']));
@@ -439,7 +439,7 @@ class IngHelper
     {
         return htmlspecialchars_decode(
             $paymentMethod->url->link(
-                'extension/payment/ingpsp_success',
+                'extension/payment/ingpay_success',
                 ['order_id' => $orderId]
             )
         );
@@ -454,7 +454,7 @@ class IngHelper
     {
         return htmlspecialchars_decode(
             $paymentMethod->url->link(
-                'extension/payment/ingpsp_failure',
+                'extension/payment/ingpay_failure',
                 ['order_id' => $orderId]
             )
         );
@@ -588,7 +588,7 @@ class IngHelper
 
         return [
             'name' => $shippingMethod['title'],
-            'type' => \GingerPayments\Payment\Order\OrderLine\Type::SHIPPING_FEE,
+            'type' => \GingerPayments\Payment\Order\OrderLine\Type::SHIPPEMS_FEE,
             'amount' => static::formatAmountToCents(
                 $paymentMethod->tax->calculate(
                     $shippingMethod['cost'],
@@ -653,7 +653,7 @@ class IngHelper
     }
 
     /**
-     * Obtain ING PSP order id from order history.
+     * Obtain EMS PAY order id from order history.
      *
      * @param array $orderHistory
      * @return mixed
