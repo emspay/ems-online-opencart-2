@@ -35,7 +35,7 @@ class ControllerExtensionPaymentEmspayIdeal extends Controller
     ];
 
     /**
-     * @var array EMS PSP list of available products
+     * @var array EMS PAY list of available products
      */
     static $psp_products = [
         'kassacompleet' => 'Kassa Compleet',
