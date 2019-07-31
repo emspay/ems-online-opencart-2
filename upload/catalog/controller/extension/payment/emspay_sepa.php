@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Class ControllerPaymentIngpspSepa
+ * Class ControllerPaymentEmspaySepa
  */
-class ControllerExtensionPaymentIngpspSepa extends Controller
+class ControllerExtensionPaymentEmspaySepa extends Controller
 {
     /**
      * Default currency for Order
@@ -13,25 +13,25 @@ class ControllerExtensionPaymentIngpspSepa extends Controller
     /**
      * Payments module name
      */
-    const MODULE_NAME = 'ingpsp_sepa';
+    const MODULE_NAME = 'emspay_sepa';
 
     /**
-     *  ING PSP bank transfer details
+     *  EMS PAY bank transfer details
      */
-    const ING_BIC = 'INGBNL2A';
-    const ING_IBAN = 'NL13INGB0005300060';
-    const ING_HOLDER = 'ING Bank N.V. PSP';
-    const ING_RESIDENCE = 'Amsterdam';
+    const EMS_BIC = 'INGBNL2A';
+    const EMS_IBAN = 'NL13INGB0005300060';
+    const EMS_HOLDER = 'ING Bank N.V. PSP';
+    const EMS_RESIDENCE = 'Amsterdam';
 
     /**
      * @var \GingerPayments\Payment\Client
      */
-    public $ing;
+    public $ems;
 
     /**
      * @var IngHelper
      */
-    public $ingHelper;
+    public $emsHelper;
 
     /**
      * @param $registry
@@ -40,8 +40,8 @@ class ControllerExtensionPaymentIngpspSepa extends Controller
     {
         parent::__construct($registry);
 
-        $this->ingHelper = new IngHelper(static::MODULE_NAME);
-        $this->ing = $this->ingHelper->getClient($this->config);
+        $this->emsHelper = new IngHelper(static::MODULE_NAME);
+        $this->ems = $this->emsHelper->getClient($this->config);
         $this->language->load('extension/payment/'.static::MODULE_NAME);
         $this->load->model('checkout/order');
     }
@@ -56,42 +56,42 @@ class ControllerExtensionPaymentIngpspSepa extends Controller
             $orderInfo = $this->model_checkout_order->getOrder($this->session->data['order_id']);
 
             if ($orderInfo) {
-                $ingOrderData = $this->ingHelper->getOrderData($orderInfo, $this);
-                $ingOrder = $this->createOrder($ingOrderData);
+                $emsOrderData = $this->emsHelper->getOrderData($orderInfo, $this);
+                $emsOrder = $this->createOrder($emsOrderData);
 
-                if ($ingOrder->status()->isError()) {
+                if ($emsOrder->status()->isError()) {
                     $this->language->load('extension/payment/'.static::MODULE_NAME);
-                    $this->session->data['error'] = $ingOrder->transactions()->current()->reason()->toString();
+                    $this->session->data['error'] = $emsOrder->transactions()->current()->reason()->toString();
                     $this->session->data['error'] .= $this->language->get('error_another_payment_method');
                     $this->response->redirect($this->url->link('checkout/checkout'));
                 }
 
-                $paymentReference = $this->getBankPaymentReference($ingOrder);
+                $paymentReference = $this->getBankPaymentReference($emsOrder);
 
                 $this->model_checkout_order->addOrderHistory(
-                    $ingOrder->getMerchantOrderId(),
-                    $this->ingHelper->getOrderStatus($ingOrder->getStatus(), $this->config),
-                    'ING PSP Bank Transfer order: '.$ingOrder->id()->toString(),
+                    $emsOrder->getMerchantOrderId(),
+                    $this->emsHelper->getOrderStatus($emsOrder->getStatus(), $this->config),
+                    'EMS PAY Bank Transfer order: '.$emsOrder->id()->toString(),
                     true
                 );
 
                 $this->model_checkout_order->addOrderHistory(
-                    $ingOrder->getMerchantOrderId(),
-                    $this->ingHelper->getOrderStatus($ingOrder->getStatus(), $this->config),
-                    'ING PSP Bank Transfer Reference ID: '.$paymentReference,
+                    $emsOrder->getMerchantOrderId(),
+                    $this->emsHelper->getOrderStatus($emsOrder->getStatus(), $this->config),
+                    'EMS PAY Bank Transfer Reference ID: '.$paymentReference,
                     true
                 );
 
                 $data = [];
                 $data['button_confirm'] = $this->language->get('button_confirm');
-                $data['ing_bank_details'] = $this->language->get('ing_bank_details');
-                $data['ing_payment_reference'] = $this->language->get('ing_payment_reference').$paymentReference;
-                $data['ing_iban'] = $this->language->get('ing_iban').static::ING_IBAN;
-                $data['ing_bic'] = $this->language->get('ing_bic').static::ING_BIC;
-                $data['ing_account_holder'] = $this->language->get('ing_account_holder').static::ING_HOLDER;
-                $data['ing_residence'] = $this->language->get('ing_residence').static::ING_RESIDENCE;
+                $data['ems_bank_details'] = $this->language->get('ems_bank_details');
+                $data['ems_payment_reference'] = $this->language->get('ems_payment_reference').$paymentReference;
+                $data['ems_iban'] = $this->language->get('ems_iban').static::EMS_IBAN;
+                $data['ems_bic'] = $this->language->get('ems_bic').static::EMS_BIC;
+                $data['ems_account_holder'] = $this->language->get('ems_account_holder').static::EMS_HOLDER;
+                $data['ems_residence'] = $this->language->get('ems_residence').static::EMS_RESIDENCE;
                 $data['text_description'] = $this->language->get('text_description');
-                $data['action'] = $this->ingHelper->getSucceedUrl($this, $this->session->data['order_id']);
+                $data['action'] = $this->emsHelper->getSucceedUrl($this, $this->session->data['order_id']);
                 
                 return $this->load->view('extension/payment/'.static::MODULE_NAME, $data);
             }
@@ -102,14 +102,14 @@ class ControllerExtensionPaymentIngpspSepa extends Controller
     }
 
     /**
-     * Generate ING PSP Payments order.
+     * Generate EMS PAY Payments order.
      *
      * @param array
      * @return \GingerPayments\Payment\Order
      */
     protected function createOrder(array $orderData)
     {
-        return $this->ing->createSepaOrder(
+        return $this->ems->createSepaOrder(
             $orderData['amount'],            // Amount in cents
             $orderData['currency'],          // Currency
             $orderData['payment_info'],      // Payment information
@@ -126,12 +126,12 @@ class ControllerExtensionPaymentIngpspSepa extends Controller
     /**
      * Method gets payment reference from order.
      *
-     * @param \GingerPayments\Payment\Order $ingOrder
+     * @param \GingerPayments\Payment\Order $emsOrder
      * @return mixed
      */
-    protected function getBankPaymentReference(\GingerPayments\Payment\Order $ingOrder)
+    protected function getBankPaymentReference(\GingerPayments\Payment\Order $emsOrder)
     {
-        return $ingOrder->transactions()->current()->paymentMethodDetails()->reference()->toString();
+        return $emsOrder->transactions()->current()->paymentMethodDetails()->reference()->toString();
     }
 
     /**
@@ -143,6 +143,6 @@ class ControllerExtensionPaymentIngpspSepa extends Controller
     {
         $this->load->model('checkout/order');
         $webhookData = json_decode(file_get_contents('php://input'), true);
-        $this->ingHelper->processWebhook($this, $webhookData);
+        $this->emsHelper->processWebhook($this, $webhookData);
     }
 }

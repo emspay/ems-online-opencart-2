@@ -1,6 +1,6 @@
 <?php
 
-class ControllerExtensionPaymentIngpspHomePay extends Controller
+class ControllerExtensionPaymentEmspayHomePay extends Controller
 {
     /**
      * Default currency for Order
@@ -10,17 +10,17 @@ class ControllerExtensionPaymentIngpspHomePay extends Controller
     /**
      * Payments module name
      */
-    const MODULE_NAME = 'ingpsp_homepay';
+    const MODULE_NAME = 'emspay_homepay';
 
     /**
      * @var \GingerPayments\Payment\Client
      */
-    public $ing;
+    public $ems;
 
     /**
      * @var IngHelper
      */
-    public $ingHelper;
+    public $emsHelper;
 
     /**
      * @param $registry
@@ -29,8 +29,8 @@ class ControllerExtensionPaymentIngpspHomePay extends Controller
     {
         parent::__construct($registry);
 
-        $this->ingHelper = new IngHelper(static::MODULE_NAME);
-        $this->ing = $this->ingHelper->getClient($this->config);
+        $this->emsHelper = new IngHelper(static::MODULE_NAME);
+        $this->ems = $this->emsHelper->getClient($this->config);
     }
 
     /**
@@ -57,17 +57,17 @@ class ControllerExtensionPaymentIngpspHomePay extends Controller
             $orderInfo = $this->model_checkout_order->getOrder($this->session->data['order_id']);
 
             if ($orderInfo) {
-                $ingOrderData = $this->ingHelper->getOrderData($orderInfo, $this);
-                $ingOrder = $this->createOrder($ingOrderData);
+                $emsOrderData = $this->emsHelper->getOrderData($orderInfo, $this);
+                $emsOrder = $this->createOrder($emsOrderData);
 
-                if ($ingOrder->status()->isError()) {
+                if ($emsOrder->status()->isError()) {
                     $this->language->load('extension/payment/'.static::MODULE_NAME);
-                    $this->session->data['error'] = $ingOrder->transactions()->current()->reason()->toString();
+                    $this->session->data['error'] = $emsOrder->transactions()->current()->reason()->toString();
                     $this->session->data['error'] .= $this->language->get('error_another_payment_method');
                     $this->response->redirect($this->url->link('checkout/checkout'));
                 }
 
-                $this->response->redirect($ingOrder->firstTransactionPaymentUrl());
+                $this->response->redirect($emsOrder->firstTransactionPaymentUrl());
             }
         } catch (\Exception $e) {
             $this->session->data['error'] = $e->getMessage();
@@ -80,7 +80,7 @@ class ControllerExtensionPaymentIngpspHomePay extends Controller
      */
     public function callback()
     {
-        $this->ingHelper->loadCallbackFunction($this);
+        $this->emsHelper->loadCallbackFunction($this);
     }
 
     /**
@@ -90,7 +90,7 @@ class ControllerExtensionPaymentIngpspHomePay extends Controller
      */
     public function processing()
     {
-        return $this->ingHelper->loadProcessingPage($this);
+        return $this->emsHelper->loadProcessingPage($this);
     }
 
     /**
@@ -102,18 +102,18 @@ class ControllerExtensionPaymentIngpspHomePay extends Controller
     {
         $this->cart->clear();
 
-        return $this->ingHelper->loadPendingPage($this);
+        return $this->emsHelper->loadPendingPage($this);
     }
 
     /**
-     * Generate ING PSP order.
+     * Generate EMS PAY order.
      *
      * @param array
      * @return \GingerPayments\Payment\Order
      */
     protected function createOrder(array $orderData)
     {
-        return $this->ing->createHomepayOrder(
+        return $this->ems->createHomepayOrder(
             $orderData['amount'],            // Amount in cents
             $orderData['currency'],          // Currency
             [],                              // Payment Method Details
@@ -136,6 +136,6 @@ class ControllerExtensionPaymentIngpspHomePay extends Controller
     {
         $this->load->model('checkout/order');
         $webhookData = json_decode(file_get_contents('php://input'), true);
-        $this->ingHelper->processWebhook($this, $webhookData);
+        $this->emsHelper->processWebhook($this, $webhookData);
     }
 }

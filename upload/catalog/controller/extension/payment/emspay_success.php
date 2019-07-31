@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Class ControllerPaymentIngpspSuccess
+ * Class ControllerPaymentEmspaySuccess
  */
-class ControllerExtensionPaymentIngpspSuccess extends Controller
+class ControllerExtensionPaymentEmspaySuccess extends Controller
 {
     public function index()
     {
         $this->load->language('checkout/success');
-        $this->load->language('extension/payment/ingpsp_common');
+        $this->load->language('extension/payment/emspay_common');
                 
         $orderId = isset($this->request->get['order_id']) ? $this->request->get['order_id'] : '';
         if (isset($this->session->data['order_id'])) {
@@ -36,8 +36,8 @@ class ControllerExtensionPaymentIngpspSuccess extends Controller
                 }
             }
 
-            unset($this->session->data['shipping_method']);
-            unset($this->session->data['shipping_methods']);
+            unset($this->session->data['shippems_method']);
+            unset($this->session->data['shippems_methods']);
             unset($this->session->data['payment_method']);
             unset($this->session->data['payment_methods']);
             unset($this->session->data['guest']);
@@ -50,7 +50,7 @@ class ControllerExtensionPaymentIngpspSuccess extends Controller
             unset($this->session->data['totals']);
         }
                
-        $this->document->setTitle($this->language->get('heading_title'));
+        $this->document->setTitle($this->language->get('headems_title'));
 
         $data['breadcrumbs'] = array();
 
@@ -74,7 +74,7 @@ class ControllerExtensionPaymentIngpspSuccess extends Controller
             'href' => $this->url->link('checkout/success')
         );
 
-        $data['heading_title'] = sprintf($this->language->get('text_your_order_at'), $orderId, $this->config->get('config_name'));
+        $data['headems_title'] = sprintf($this->language->get('text_your_order_at'), $orderId, $this->config->get('config_name'));
 
                
         if ($this->customer->isLogged()) {

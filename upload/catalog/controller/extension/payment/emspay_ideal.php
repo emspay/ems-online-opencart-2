@@ -1,29 +1,29 @@
 <?php
 
 /**
- * Class ControllerPaymentIngpspBancontact
+ * Class ControllerExtensionPaymentEmspayIdeal
  */
-class ControllerExtensionPaymentIngpspBancontact extends Controller
+class ControllerExtensionPaymentEmspayIdeal extends Controller
 {
     /**
-     * Default currency for ING PSP Order
+     * Default currency for Order
      */
     const DEFAULT_CURRENCY = 'EUR';
 
     /**
      * Payments module name
      */
-    const MODULE_NAME = 'ingpsp_bancontact';
+    const MODULE_NAME = 'emspay_ideal';
 
     /**
      * @var \GingerPayments\Payment\Client
      */
-    public $ing;
+    public $ems;
 
     /**
      * @var IngHelper
      */
-    public $ingHelper;
+    public $emsHelper;
 
     /**
      * @param $registry
@@ -32,8 +32,8 @@ class ControllerExtensionPaymentIngpspBancontact extends Controller
     {
         parent::__construct($registry);
 
-        $this->ingHelper = new IngHelper(static::MODULE_NAME);
-        $this->ing = $this->ingHelper->getClient($this->config);
+        $this->emsHelper = new IngHelper(static::MODULE_NAME);
+        $this->ems = $this->emsHelper->getClient($this->config);
     }
 
     /**
@@ -45,6 +45,8 @@ class ControllerExtensionPaymentIngpspBancontact extends Controller
         $this->language->load('extension/payment/'.static::MODULE_NAME);
 
         $data['button_confirm'] = $this->language->get('button_confirm');
+        $data['text_select_bank'] = $this->language->get('text_select_bank');
+        $data['issuers'] = $this->ems->getIdealIssuers();
         $data['action'] = $this->url->link('extension/payment/'.static::MODULE_NAME.'/confirm');
 
         return $this->load->view('extension/payment/'.static::MODULE_NAME, $data);
@@ -60,17 +62,17 @@ class ControllerExtensionPaymentIngpspBancontact extends Controller
             $orderInfo = $this->model_checkout_order->getOrder($this->session->data['order_id']);
 
             if ($orderInfo) {
-                $ingOrderData = $this->ingHelper->getOrderData($orderInfo, $this);
-                $ingOrder = $this->createOrder($ingOrderData);
+                $emsOrderData = $this->emsHelper->getOrderData($orderInfo, $this);
+                $emsOrder = $this->createOrder($emsOrderData);
 
-                if ($ingOrder->status()->isError()) {
+                if ($emsOrder->status()->isError()) {
                     $this->language->load('extension/payment/'.static::MODULE_NAME);
-                    $this->session->data['error'] = $ingOrder->transactions()->current()->reason()->toString();
+                    $this->session->data['error'] = $emsOrder->transactions()->current()->reason()->toString();
                     $this->session->data['error'] .= $this->language->get('error_another_payment_method');
                     $this->response->redirect($this->url->link('checkout/checkout'));
                 }
 
-                $this->response->redirect($ingOrder->firstTransactionPaymentUrl());
+                $this->response->redirect($emsOrder->firstTransactionPaymentUrl());
             }
         } catch (\Exception $e) {
             $this->session->data['error'] = $e->getMessage();
@@ -83,7 +85,7 @@ class ControllerExtensionPaymentIngpspBancontact extends Controller
      */
     public function callback()
     {
-        $this->ingHelper->loadCallbackFunction($this);
+        $this->emsHelper->loadCallbackFunction($this);
     }
 
     /**
@@ -93,7 +95,7 @@ class ControllerExtensionPaymentIngpspBancontact extends Controller
      */
     public function processing()
     {
-        return $this->ingHelper->loadProcessingPage($this);
+        return $this->emsHelper->loadProcessingPage($this);
     }
 
     /**
@@ -105,28 +107,7 @@ class ControllerExtensionPaymentIngpspBancontact extends Controller
     {
         $this->cart->clear();
 
-        return $this->ingHelper->loadPendingPage($this);
-    }
-
-    /**
-     * Generate order.
-     *
-     * @param array
-     * @return \GingerPayments\Payment\Order
-     */
-    protected function createOrder(array $orderData)
-    {
-        return $this->ing->createBancontactOrder(
-            $orderData['amount'],            // Amount in cents
-            $orderData['currency'],          // Currency
-            $orderData['description'],       // Description
-            $orderData['merchant_order_id'], // Merchant Order Id
-            $orderData['return_url'],        // Return URL
-            null,                            // Expiration Period
-            $orderData['customer'],          // Customer information
-            $orderData['plugin_version'],    // Extra information
-            $orderData['webhook_url']        // Webhook URL
-        );
+        return $this->emsHelper->loadPendingPage($this);
     }
 
     /**
@@ -138,6 +119,28 @@ class ControllerExtensionPaymentIngpspBancontact extends Controller
     {
         $this->load->model('checkout/order');
         $webhookData = json_decode(file_get_contents('php://input'), true);
-        $this->ingHelper->processWebhook($this, $webhookData);
+        $this->emsHelper->processWebhook($this, $webhookData);
+    }
+
+    /**
+     * Generate EMS PAY iDEAL order.
+     *
+     * @param array
+     * @return \GingerPayments\Payment\Order
+     */
+    protected function createOrder(array $orderData)
+    {
+        return $this->ems->createIdealOrder(
+            $orderData['amount'],            // Amount in cents
+            $orderData['currency'],          // Currency
+            $orderData['issuer_id'],         // Issuer ID (BIC/SWIFT)
+            $orderData['description'],       // Description
+            $orderData['merchant_order_id'], // Merchant Order Id
+            $orderData['return_url'],        // Return URL
+            null,                            // Expiration Period
+            $orderData['customer'],          // Customer information
+            $orderData['plugin_version'],    // Extra information
+            $orderData['webhook_url']        // Webhook URL
+        );
     }
 }
