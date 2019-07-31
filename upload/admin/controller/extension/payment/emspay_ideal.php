@@ -15,7 +15,7 @@ class ControllerExtensionPaymentEmspayIdeal extends Controller
      */
     static $update_fields = [
         'api_key',
-        'psp_product',
+        'pay_product',
         'status',
         'sort_order',
         'order_status_id_new',
@@ -37,7 +37,7 @@ class ControllerExtensionPaymentEmspayIdeal extends Controller
     /**
      * @var array EMS PAY list of available products
      */
-    static $psp_products = [
+    static $pay_products = [
         'kassacompleet' => 'Kassa Compleet',
         'emscheckout' => 'EMS Checkout',
         'epay' => 'EMS ePay'
@@ -160,7 +160,7 @@ class ControllerExtensionPaymentEmspayIdeal extends Controller
                 'extension/extension', 'token='.$this->session->data['token'] . '&type=payment',
                 true
             ),
-            'psp_products' => self::$psp_products
+            'pay_products' => self::$pay_products
         ];
     }
 
