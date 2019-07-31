@@ -1,13 +1,13 @@
-<h2><?php echo $ing_bank_details; ?></h2>
+<h2><?php echo $ems_bank_details; ?></h2>
 <p><b><?php echo $text_description; ?></b></p>
 
 <form action=<?php echo $action; ?> method="post">
     <div class="well well-sm">
-        <p><?php echo $ing_payment_reference; ?></p>
-        <p><?php echo $ing_iban; ?></p>
-        <p><?php echo $ing_bic; ?></p>
-        <p><?php echo $ing_account_holder; ?></p>
-        <p><?php echo $ing_residence; ?></p>
+        <p><?php echo $ems_payment_reference; ?></p>
+        <p><?php echo $ems_iban; ?></p>
+        <p><?php echo $ems_bic; ?></p>
+        <p><?php echo $ems_account_holder; ?></p>
+        <p><?php echo $ems_residence; ?></p>
     </div>
 
     <div class="buttons pull-right">
