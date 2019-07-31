@@ -19,7 +19,6 @@ final class PaymentMethod
     const COD = 'cash-on-delivery';
     const KLARNA = 'klarna';
     const PAYPAL = 'paypal';
-    const HOMEPAY = 'homepay';
     const PAYCONIQ = 'payconiq';
     const AFTERPAY = 'afterpay';
 

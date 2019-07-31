@@ -96,7 +96,6 @@ final class Client
             'cash-on-delivery' => 'cashondelivery',
             'credit-card' => 'creditcard',
             'paypal' => 'paypal',
-            'homepay' => 'homepay',
             'klarna' => 'klarna',
             'sofort' => 'sofort',
             'payconiq' => 'payconiq',
