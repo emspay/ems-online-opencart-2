@@ -12,7 +12,7 @@ class ControllerExtensionPaymentEmspayAfterpayCancelled extends Controller
         $this->load->language('extension/payment/emspay_common');
                 
         $orderId = isset($this->request->get['order_id']) ? $this->request->get['order_id'] : '';
-        $this->document->setTitle($this->language->get('headems_title'));
+        $this->document->setTitle($this->language->get('heading_title'));
 
         $data['breadcrumbs'] = array();
 
@@ -36,7 +36,7 @@ class ControllerExtensionPaymentEmspayAfterpayCancelled extends Controller
             'href' => $this->url->link('checkout/failure')
         );
 
-        $data['headems_title'] = sprintf($this->language->get('text_your_order_at'), $orderId, $this->config->get('config_name'));
+        $data['heading_title'] = sprintf($this->language->get('text_your_order_at'), $orderId, $this->config->get('config_name'));
 
         $data['text_message'] = $this->language->get('text_afterpay_cancelled_statue_error_message');
 

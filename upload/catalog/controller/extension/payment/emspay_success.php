@@ -50,7 +50,7 @@ class ControllerExtensionPaymentEmspaySuccess extends Controller
             unset($this->session->data['totals']);
         }
                
-        $this->document->setTitle($this->language->get('headems_title'));
+        $this->document->setTitle($this->language->get('heading_title'));
 
         $data['breadcrumbs'] = array();
 
@@ -74,7 +74,7 @@ class ControllerExtensionPaymentEmspaySuccess extends Controller
             'href' => $this->url->link('checkout/success')
         );
 
-        $data['headems_title'] = sprintf($this->language->get('text_your_order_at'), $orderId, $this->config->get('config_name'));
+        $data['heading_title'] = sprintf($this->language->get('text_your_order_at'), $orderId, $this->config->get('config_name'));
 
                
         if ($this->customer->isLogged()) {
