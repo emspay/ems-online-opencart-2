@@ -4,7 +4,7 @@
  * General Admin Settings Page
  */
 $_['heading_title'] = 'EMS PAY: iDEAL';
-$_['text_emspay_ideal'] = '<img src="view/image/payment/emspay.png" alt="EMS PAY" title="EMS PAY" />';
+$_['text_emspay_ideal'] = '<img src="view/image/payment/emspay_ideal.png" alt="EMS PAY" title="EMS PAY" />';
 $_['text_extension'] = 'Extensions';
 
 /**

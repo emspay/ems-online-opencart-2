@@ -4,7 +4,7 @@
  * General Admin Settings Page
  */
 $_['heading_title'] = 'EMS PAY: Credit Card';
-$_['text_emspay_cc'] = '<img src="view/image/payment/emspay.png" alt="EMS PAY" title="EMS PAY" />';
+$_['text_emspay_cc'] = '<img src="view/image/payment/emspay_creditcard.png" alt="EMS PAY" title="EMS PAY" />';
 $_['text_extension'] = 'Extensions';
 
 /**

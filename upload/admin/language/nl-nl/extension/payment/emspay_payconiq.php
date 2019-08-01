@@ -3,7 +3,7 @@
  * General Admin Settings Page
  */
 $_['heading_title'] = 'EMS PAY: Payconiq';
-$_['text_emspay_payconiq'] = '<img src="view/image/payment/emspay.png" alt="EMS PAY" title="EMS PAY" />';
+$_['text_emspay_payconiq'] = '<img src="view/image/payment/emspay_payconiq.png" alt="EMS PAY" title="EMS PAY" />';
 $_['text_extension'] = 'Extensies';
 
 /**
