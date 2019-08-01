@@ -19,7 +19,6 @@ $_['entry_order_error'] = 'Bestellfehler:';
 $_['entry_sort_order'] = 'Sortierreihenfolge:';
 $_['entry_ems_api_key'] = 'EMS PAY API Schüssel:';
 $_['entry_ems_total'] = 'Gesamt:';
-$_['entry_ems_product'] = 'EMS PAY Produkt:';
 $_['entry_cacert'] = 'Bundle cURL ca.cert:';
 $_['entry_send_webhook'] = 'Webhook-URL automatisch generieren:';
 $_['entry_order_captured'] = 'Bestellung gefangen:';

@@ -19,7 +19,6 @@ $_['entry_order_error'] = 'Erreur de commande:';
 $_['entry_sort_order'] = 'Order de tri:';
 $_['entry_ems_api_key'] = 'EMS PAY clé API:';
 $_['entry_ems_total'] = 'Total:';
-$_['entry_ems_product'] = 'Produit EMS PAY:';
 $_['entry_cacert'] = 'Bundle cURL ca.cert:';
 $_['entry_send_webhook'] = 'Générer URL Webhook:';
 $_['entry_order_captured'] = 'Commande capturé:';
