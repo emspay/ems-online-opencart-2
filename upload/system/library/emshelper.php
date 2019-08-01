@@ -49,7 +49,6 @@ class EmsHelper
     {
         return $this->getGignerClinet(
                 $config->get($this->getPaymentSettingsFieldName('api_key')),
-                $config->get($this->getPaymentSettingsFieldName('pay_product')),
                 $config->get($this->getPaymentSettingsFieldName('bundle_cacert'))
                );
     }
@@ -63,7 +62,6 @@ class EmsHelper
         return $this->getGignerClinet(
                 $config->get($this->getPaymentSettingsFieldName('afterpay_test_api_key'))
                 ?: $config->get($this->getPaymentSettingsFieldName('api_key')),
-                $config->get($this->getPaymentSettingsFieldName('pay_product')),
                 $config->get($this->getPaymentSettingsFieldName('bundle_cacert'))
                );
     }
@@ -77,7 +75,6 @@ class EmsHelper
         return $this->getGignerClinet(
                 $config->get($this->getPaymentSettingsFieldName('klarna_test_api_key'))
                 ?: $config->get($this->getPaymentSettingsFieldName('api_key')),
-                $config->get($this->getPaymentSettingsFieldName('pay_product')),
                 $config->get($this->getPaymentSettingsFieldName('bundle_cacert'))
                );
     }
@@ -91,9 +88,9 @@ class EmsHelper
      * @param boolean $useBundle
      * @return \GingerPayments\Payment\Client
      */
-    protected function getGignerClinet($apiKey, $product, $useBundle = false)
+    protected function getGignerClinet($apiKey, $useBundle = false)
     {
-        $ems = \GingerPayments\Payment\Ginger::createClient($apiKey, $product);
+        $ems = \GingerPayments\Payment\Ginger::createClient($apiKey);
 
         if ($useBundle) {
             $ems->useBundledCA();

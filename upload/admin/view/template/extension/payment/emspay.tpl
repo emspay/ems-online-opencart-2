@@ -113,25 +113,6 @@
                     </div>
                     <?php endif; ?>
 
-                    <div class="form-group required">
-                        <label class="col-sm-2 control-label" for="input-ems-product">
-                            <?php echo $entry_ems_product; ?>
-                        </label>
-                        <div class="col-sm-10">
-                            <select name="ems_psp_product" class="form-control"
-                                    id="input-ems_psp_product">
-                                <?php foreach ($psp_products as $value => $title) { ?>
-                                <?php if ($value == $ems_psp_product) { ?>
-                                <option value="<?php echo $value; ?>"
-                                        selected="selected"><?php echo $title; ?></option>
-                                <?php } else { ?>
-                                <option value="<?php echo $value ?>"><?php echo $title; ?></option>
-                                <?php } ?>
-                                <?php } ?>
-                            </select>
-                        </div>
-                    </div>
-
                     <div class="form-group">
                         <label class="col-sm-2 control-label"
                                for="input-ems_order_status_id_new"><?php echo $entry_order_new; ?></label>

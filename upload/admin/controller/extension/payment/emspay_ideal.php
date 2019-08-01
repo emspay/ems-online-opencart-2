@@ -15,7 +15,6 @@ class ControllerExtensionPaymentEmspayIdeal extends Controller
      */
     static $update_fields = [
         'api_key',
-        'pay_product',
         'status',
         'sort_order',
         'order_status_id_new',
@@ -32,15 +31,6 @@ class ControllerExtensionPaymentEmspayIdeal extends Controller
         'klarna_test_api_key',
         'afterpay_ip_filter',
         'afterpay_test_api_key'
-    ];
-
-    /**
-     * @var array EMS PAY list of available products
-     */
-    static $pay_products = [
-        'kassacompleet' => 'Kassa Compleet',
-        'emscheckout' => 'EMS Checkout',
-        'epay' => 'EMS ePay'
     ];
 
     /**
@@ -139,7 +129,6 @@ class ControllerExtensionPaymentEmspayIdeal extends Controller
             'entry_sort_order' => $this->language->get('entry_sort_order'),
             'entry_status' => $this->language->get('entry_status'),
             'entry_ems_total' => $this->language->get('entry_ems_total'),
-            'entry_ems_product' =>  $this->language->get('entry_ems_product'),
             'entry_cacert' =>  $this->language->get('entry_cacert'),
             'entry_send_webhook' =>  $this->language->get('entry_send_webhook'),
             'entry_klarna_ip_filter' => $this->language->get('entry_klarna_ip_filter'),
@@ -159,8 +148,7 @@ class ControllerExtensionPaymentEmspayIdeal extends Controller
             'cancel' => $this->url->link(
                 'extension/extension', 'token='.$this->session->data['token'] . '&type=payment',
                 true
-            ),
-            'pay_products' => self::$pay_products
+            )
         ];
     }
 
