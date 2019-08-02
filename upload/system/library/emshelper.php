@@ -191,7 +191,7 @@ class EmsHelper
      */
     public function getOrderDescription($orderId, $paymentMethod)
     {
-        $paymentMethod->language->load('extension/payment/ingpay_common');
+        $paymentMethod->language->load('extension/payment/emspay_common');
   
         return sprintf($paymentMethod->language->get('text_your_order_at'), $orderId, $paymentMethod->config->get('config_name'));
     }
@@ -338,7 +338,7 @@ class EmsHelper
 
         return $paymentMethod->response->setOutput(
             $paymentMethod->load->view(
-                'extension/payment/ingpay_processing',
+                'extension/payment/emspay_processing',
                 $this->getPageData($paymentMethod)
             )
         );
@@ -352,7 +352,7 @@ class EmsHelper
     {
         return $paymentMethod->response->setOutput(
             $paymentMethod->load->view(
-                'extension/payment/ingpay_pending',
+                'extension/payment/emspay_pending',
                 $this->getPageData($paymentMethod)
             )
         );
@@ -366,7 +366,7 @@ class EmsHelper
     {
         $paymentMethod->load->language('extension/payment/'.$this->paymentMethod);
         $paymentMethod->load->language('checkout/success');
-        $paymentMethod->load->language('extension/payment/ingpay_common');
+        $paymentMethod->load->language('extension/payment/emspay_common');
 
         return [
             'breadcrumbs' => $this->getBreadcrumbs($paymentMethod),
@@ -436,7 +436,7 @@ class EmsHelper
     {
         return htmlspecialchars_decode(
             $paymentMethod->url->link(
-                'extension/payment/ingpay_success',
+                'extension/payment/emspay_success',
                 ['order_id' => $orderId]
             )
         );
@@ -451,7 +451,7 @@ class EmsHelper
     {
         return htmlspecialchars_decode(
             $paymentMethod->url->link(
-                'extension/payment/ingpay_failure',
+                'extension/payment/emspay_failure',
                 ['order_id' => $orderId]
             )
         );
