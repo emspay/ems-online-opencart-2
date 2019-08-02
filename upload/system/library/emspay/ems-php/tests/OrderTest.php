@@ -182,9 +182,9 @@ final class OrderTest extends \PHPUnit_Framework_TestCase
             'expiration_period' => 'P0Y0M0DT1H0M0S',
             'id' => '6cc8bc83-c14a-4871-b91e-a8575db5556d',
             'project_id' => '4e8207ef-caf2-429e-a8e1-be8d628beccb',
-            'created' => '2015-03-07T20:58:35+0100',
-            'modified' => '2015-03-07T20:58:35+0100',
-            'completed' => '2015-03-07T20:58:35+0100',
+            'created' => '2015-03-07T20:58:35+01:00',
+            'modified' => '2015-03-07T20:58:35+01:00',
+            'completed' => '2015-03-07T20:58:35+01:00',
             'status' => 'new',
             'customer' => $customer
         ];
@@ -288,12 +288,13 @@ final class OrderTest extends \PHPUnit_Framework_TestCase
             'last_name' => "Lastname",
             'merchant_customer_id' => "2",
             'phone_numbers' => ["0123456789"],
-            'postal_code' => null,
-            'housenumber' => null,
-            'locale' => null,
+            'postal_code' => '',
+            'housenumber' => '',
+            'locale' => '',
             'gender' => 'male',
             'birthdate' => '1988-03-29',
-            'ip_address' => '128.0.0.1'
+            'ip_address' => '128.0.0.1',
+			'additional_addresses' => [],
         ];
 
         $array = [
@@ -306,14 +307,14 @@ final class OrderTest extends \PHPUnit_Framework_TestCase
             'expiration_period' => 'P0Y0M0DT1H0M0S',
             'id' => '6cc8bc83-c14a-4871-b91e-a8575db5556d',
             'project_id' => '4e8207ef-caf2-429e-a8e1-be8d628beccb',
-            'created' => '2015-03-07T20:58:35+0100',
-            'modified' => '2015-03-07T20:58:35+0100',
-            'completed' => '2015-03-07T20:58:35+0100',
+            'created' => '2015-03-07T20:58:35+01:00',
+            'modified' => '2015-03-07T20:58:35+01:00',
+            'completed' => '2015-03-07T20:58:35+01:00',
             'status' => 'new',
             'customer' => $customer,
             'extra' => null,
             'webhook_url' => 'http://www.example.com/webhook',
-            'order_lines' => null
+            'order_lines' => null,
         ];
 
         $this->assertEquals(
@@ -361,7 +362,8 @@ final class OrderTest extends \PHPUnit_Framework_TestCase
             'locale' => "en_US",
             'gender' => 'male',
             'birthdate' => '1988-03-29',
-            'ip_address' => '128.0.0.1'
+            'ip_address' => '128.0.0.1',
+			'additional_addresses' => [],
         ];
 
         $array = [
@@ -374,14 +376,14 @@ final class OrderTest extends \PHPUnit_Framework_TestCase
             'expiration_period' => 'P0Y0M0DT1H0M0S',
             'id' => '6cc8bc83-c14a-4871-b91e-a8575db5556d',
             'project_id' => '4e8207ef-caf2-429e-a8e1-be8d628beccb',
-            'created' => '2015-03-07T20:58:35+0100',
-            'modified' => '2015-03-07T20:58:35+0100',
-            'completed' => '2015-03-07T20:58:35+0100',
+            'created' => '2015-03-07T20:58:35+01:00',
+            'modified' => '2015-03-07T20:58:35+01:00',
+            'completed' => '2015-03-07T20:58:35+01:00',
             'status' => 'new',
             'customer' => $customer,
             'extra' => null,
             'webhook_url' => 'http://www.example.com/webhook',
-            'order_lines' => null
+            'order_lines' => null,
         ];
 
         $updatedOrder = [
@@ -394,9 +396,9 @@ final class OrderTest extends \PHPUnit_Framework_TestCase
             'expiration_period' => 'P0Y0M0DT2H0M0S',
             'id' => '6cc8bc83-c14a-4871-b91e-a8575db5556d',
             'project_id' => '4e8207ef-caf2-429e-a8e1-be8d628beccb',
-            'created' => '2015-03-07T20:58:35+0100',
-            'modified' => '2015-03-07T20:58:35+0100',
-            'completed' => '2015-03-07T20:58:35+0100',
+            'created' => '2015-03-07T20:58:35+01:00',
+            'modified' => '2015-03-07T20:58:35+01:00',
+            'completed' => '2015-03-07T20:58:35+01:00',
             'status' => 'new',
             'customer' => $customer,
             'extra' => null,
