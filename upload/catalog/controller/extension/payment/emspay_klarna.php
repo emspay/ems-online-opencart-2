@@ -18,7 +18,7 @@ class ControllerExtensionPaymentEmspayKlarna extends Controller
     public $ems;
 
     /**
-     * @var IngHelper
+     * @var EmsHelper
      */
     public $emsHelper;
 
@@ -29,7 +29,7 @@ class ControllerExtensionPaymentEmspayKlarna extends Controller
     {
         parent::__construct($registry);
 
-        $this->emsHelper = new IngHelper(static::MODULE_NAME);
+        $this->emsHelper = new EmsHelper(static::MODULE_NAME);
         $this->ems = $this->emsHelper->getClientForKlarna($this->config);
     }
     
@@ -45,7 +45,7 @@ class ControllerExtensionPaymentEmspayKlarna extends Controller
         $this->load->model('checkout/order');
 
         try {
-            $emsOrderId = IngHelper::searchHistoryForOrderKey(
+            $emsOrderId = EmsHelper::searchHistoryForOrderKey(
                 $this->model_account_order->getOrderHistories(
                     $this->request->get['order_id']
                 )
@@ -58,7 +58,7 @@ class ControllerExtensionPaymentEmspayKlarna extends Controller
                 );
 
                 $capturedStatus = $this->emsHelper->getOrderStatus(
-                    IngHelper::EMS_STATUS_CAPTURED,
+                    EmsHelper::EMS_STATUS_CAPTURED,
                     $this->config
                 );
 

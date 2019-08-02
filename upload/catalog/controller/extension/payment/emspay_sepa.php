@@ -29,7 +29,7 @@ class ControllerExtensionPaymentEmspaySepa extends Controller
     public $ems;
 
     /**
-     * @var IngHelper
+     * @var EmsHelper
      */
     public $emsHelper;
 
@@ -40,7 +40,7 @@ class ControllerExtensionPaymentEmspaySepa extends Controller
     {
         parent::__construct($registry);
 
-        $this->emsHelper = new IngHelper(static::MODULE_NAME);
+        $this->emsHelper = new EmsHelper(static::MODULE_NAME);
         $this->ems = $this->emsHelper->getClient($this->config);
         $this->language->load('extension/payment/'.static::MODULE_NAME);
         $this->load->model('checkout/order');

@@ -36,7 +36,7 @@ class ModelExtensionPaymentEmspayAfterpay extends Model
             ];
         }
         
-        if (!IngHelper::ipIsEnabled($this->config->get('emspay_afterpay_afterpay_ip_filter'))) {
+        if (!EmsHelper::ipIsEnabled($this->config->get('emspay_afterpay_afterpay_ip_filter'))) {
             $status = false;
         }
 

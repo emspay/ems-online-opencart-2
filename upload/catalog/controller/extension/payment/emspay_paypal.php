@@ -21,7 +21,7 @@ class ControllerExtensionPaymentEmspayPayPal extends Controller
     public $ems;
 
     /**
-     * @var IngHelper
+     * @var EmsHelper
      */
     public $emsHelper;
 
@@ -32,7 +32,7 @@ class ControllerExtensionPaymentEmspayPayPal extends Controller
     {
         parent::__construct($registry);
 
-        $this->emsHelper = new IngHelper(static::MODULE_NAME);
+        $this->emsHelper = new EmsHelper(static::MODULE_NAME);
         $this->ems = $this->emsHelper->getClient($this->config);
     }
 
