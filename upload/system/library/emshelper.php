@@ -585,7 +585,7 @@ class EmsHelper
 
         return [
             'name' => $shippingMethod['title'],
-            'type' => \GingerPayments\Payment\Order\OrderLine\Type::SHIPPEMS_FEE,
+            'type' => \GingerPayments\Payment\Order\OrderLine\Type::SHIPPING_FEE,
             'amount' => static::formatAmountToCents(
                 $paymentMethod->tax->calculate(
                     $shippingMethod['cost'],
