@@ -293,7 +293,7 @@ class EmsHelper
             if ($orderInfo) {
                 $paymentMethod->model_checkout_order->addOrderHistory(
                     $emsOrder->getMerchantOrderId(),
-                    $paymentMethod->ingHelper->getOrderStatus($emsOrder->getStatus(), $paymentMethod->config),
+                    $paymentMethod->emsHelper->getOrderStatus($emsOrder->getStatus(), $paymentMethod->config),
                     'Status changed for order: '.$emsOrder->id()->toString(),
                     true
                 );
@@ -413,14 +413,14 @@ class EmsHelper
         if ($orderInfo) {
             $paymentMethod->model_checkout_order->addOrderHistory(
                 $emsOrder->getMerchantOrderId(),
-                $paymentMethod->ingHelper->getOrderStatus($emsOrder->getStatus(), $paymentMethod->config),
+                $paymentMethod->emsHelper->getOrderStatus($emsOrder->getStatus(), $paymentMethod->config),
                 'EMS PAY order: '.$emsOrder->id()->toString(),
                 true
             );
             if ($emsOrder->status()->isCompleted()) {
                 $paymentMethod->response->redirect($this->getSucceedUrl($paymentMethod, $orderInfo['order_id']));
             } elseif ($emsOrder->status()->isProcessing() || $emsOrder->status()->isNew()) {
-                $paymentMethod->response->redirect($paymentMethod->ingHelper->getProcessingUrl($paymentMethod));
+                $paymentMethod->response->redirect($paymentMethod->emsHelper->getProcessingUrl($paymentMethod));
             } else {
                 $paymentMethod->response->redirect($this->getFailureUrl($paymentMethod, $orderInfo['order_id']));
             }
