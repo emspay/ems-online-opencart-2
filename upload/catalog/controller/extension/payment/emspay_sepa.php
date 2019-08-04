@@ -18,9 +18,9 @@ class ControllerExtensionPaymentEmspaySepa extends Controller
     /**
      *  EMS PAY bank transfer details
      */
-    const EMS_BIC = 'INGBNL2A';
-    const EMS_IBAN = 'NL13INGB0005300060';
-    const EMS_HOLDER = 'ING Bank N.V. PSP';
+    const EMS_BIC = 'ABNANL2A';
+    const EMS_IBAN = 'NL79ABNA0842577610';
+    const EMS_HOLDER = 'THIRD PARTY FUNDS EMS';
     const EMS_RESIDENCE = 'Amsterdam';
 
     /**
