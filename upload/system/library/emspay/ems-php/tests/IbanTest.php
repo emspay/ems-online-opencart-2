@@ -23,6 +23,6 @@ final class IbanTest extends \PHPUnit_Framework_TestCase
     public function itShouldGuardAgainstInvalidIban()
     {
         $this->setExpectedException('Assert\InvalidArgumentException');
-        Iban::fromString('NL12IGNB0123467890');
+        Iban::fromString('NL12IGNB01234678901');
     }
 }
