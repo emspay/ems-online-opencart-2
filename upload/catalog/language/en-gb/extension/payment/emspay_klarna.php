@@ -22,4 +22,4 @@ $_['text_please_select_gender'] = 'Select your gender';
 $_['text_please_select_gender_male'] = 'Male';
 $_['text_please_select_gender_female'] = 'Female';
 
-$_['error_invalid_dob'] = 'There was an error with the date of birth that you entered. Please use the following format for entering the birth date : YYYY-MM-DD, e.g.: 1980-12-31.';
+$_['error_invalid_dob'] = 'There was an error with the date of birth that you entered. Please use the following format for entering the birth date : DD-MM-YYYY, e.g.: 31-12-1980.';
