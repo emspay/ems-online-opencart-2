@@ -22,5 +22,5 @@ $_['text_please_select_gender'] = 'Geslacht';
 $_['text_please_select_gender_male'] = 'Man';
 $_['text_please_select_gender_female'] = 'Vrouw';
 
-$_['error_invalid_dob'] = 'Er is een fout opgetreden met de geboortedatum die u heeft opgegeven. Gebruik het volgende formaat voor het invoeren van de geboortedatum: JJJJ-MM-DD; bijv: 1980-12-31.';
+$_['error_invalid_dob'] = 'Er is een fout opgetreden met de geboortedatum die u heeft opgegeven. Gebruik het volgende formaat voor het invoeren van de geboortedatum: DD-MM-JJJJ; bijv: 31-12-1980.';
 

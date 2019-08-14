@@ -22,4 +22,4 @@ $_['text_please_select_gender'] = 'Geslacht';
 $_['text_please_select_gender_male'] = 'Mann';
 $_['text_please_select_gender_female'] = 'Frau';
 
-$_['error_invalid_dob'] = 'Leider ist ein Fehler aufgetreten mit dem Geburtsdatum. Bitte geben Sie das Geburtsdatum im folgenden Format an: JJJJ-MM-TT, Z.B. 1980-12-31.';
+$_['error_invalid_dob'] = 'Leider ist ein Fehler aufgetreten mit dem Geburtsdatum. Bitte geben Sie das Geburtsdatum im folgenden Format an: TT-MM-JJJJ, Z.B. 31-12-1980.';

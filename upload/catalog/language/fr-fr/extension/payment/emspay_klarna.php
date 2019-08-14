@@ -22,4 +22,4 @@ $_['text_please_select_gender'] = 'Sexe';
 $_['text_please_select_gender_male'] = 'Homme';
 $_['text_please_select_gender_female'] = 'Femme';
 
-$_['error_invalid_dob'] = 'Il y avait une erreur avec la date de naissance que vous avez utilisée. Veuillez utiliser le format suivant pour entrer la date de naissance : AAAA-MM-JJ; par ex: 1980-12-31.';
+$_['error_invalid_dob'] = 'Il y avait une erreur avec la date de naissance que vous avez utilisée. Veuillez utiliser le format suivant pour entrer la date de naissance : JJ-MM-AAAA; par ex: 31-12-1980.';

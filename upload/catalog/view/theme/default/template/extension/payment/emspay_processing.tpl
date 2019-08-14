@@ -22,7 +22,7 @@
             <p>
                 <?php echo $processing_message; ?>
             </p>
-            <img src="catalog/view/theme/default/image/ingpsp_ajax-loader.gif" />
+            <img src="catalog/view/theme/default/image/emspay_ajax-loader.gif" />
         </div>
         <?php echo $column_right; ?>
     </div>
@@ -33,6 +33,6 @@
     var callback_url = "<?php echo $callback_url; ?>";
 </script>
 
-<script language="JavaScript" src="catalog/view/javascript/ingpsp.js" ></script>
+<script language="JavaScript" src="catalog/view/javascript/emspay.js" ></script>
 
 <?php echo $footer; ?>
