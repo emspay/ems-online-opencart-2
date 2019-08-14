@@ -225,7 +225,10 @@ class ControllerExtensionPaymentEmspayIdeal extends Controller
     {
         $postFields = [];
         foreach (static::$update_fields AS $field) {
-            $postFields[$this->getModuleFieldName($field)] = $this->request->post[$this->getPostFieldName($field)];
+            $postFieldName = $this->getPostFieldName($field);
+			if ( array_key_exists($postFieldName, $this->request->post) ) {
+				$postFields[$this->getModuleFieldName($field)] = $this->request->post[$postFieldName];
+			}
         }
 
         return $postFields;
