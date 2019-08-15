@@ -539,17 +539,20 @@ class EmsHelper
                         true
                     )
                 );
-            $orderLines[] = [
-                'url' => $paymentMethod->url->link('product/product', 'product_id='.$item['product_id']),
-                'name' => $item['name'],
-                'type' => \GingerPayments\Payment\Order\OrderLine\Type::PHYSICAL,
-                'amount' => $amount,
-                'currency' => \GingerPayments\Payment\Currency::EUR,
-                'quantity' => $item['quantity'],
-                'image_url' => $paymentMethod->model_tool_image->resize($item['image'], 100, 100),
-                'vat_percentage' => $this->getOrderLineTaxRate($paymentMethod, $item['price'], $item['tax_class_id']),
-                'merchant_order_line_id' => $item['product_id']
-            ];
+	        $orderLines[] = array_filter([
+		        'url' => $paymentMethod->url->link('product/product', 'product_id='.$item['product_id']),
+		        'name' => $item['name'],
+		        'type' => \GingerPayments\Payment\Order\OrderLine\Type::PHYSICAL,
+		        'amount' => $amount,
+		        'currency' => \GingerPayments\Payment\Currency::EUR,
+		        'quantity' => $item['quantity'],
+		        'image_url' => $paymentMethod->model_tool_image->resize($item['image'], 100, 100),
+		        'vat_percentage' => $this->getOrderLineTaxRate($paymentMethod, $item['price'], $item['tax_class_id']),
+		        'merchant_order_line_id' => $item['product_id']
+	        ],
+	        function($value) {
+		        return ! empty($value);
+	        });
             $total_amount += $amount * $item['quantity'];
         }
 
