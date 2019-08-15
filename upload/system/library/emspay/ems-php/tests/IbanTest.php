@@ -20,9 +20,11 @@ final class IbanTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function itShouldGuardAgainstInvalidIban()
+    public function itShouldInstantiateFromAEmptyString()
     {
-        $this->setExpectedException('Assert\InvalidArgumentException');
-        Iban::fromString('NL12IGNB01234678901');
+        $this->assertInstanceOf(
+            'GingerPayments\Payment\Iban',
+            Iban::fromString('')
+        );
     }
 }
