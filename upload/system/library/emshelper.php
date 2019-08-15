@@ -551,7 +551,7 @@ class EmsHelper
 		        'merchant_order_line_id' => $item['product_id']
 	        ],
 	        function($value) {
-		        return ! empty($value);
+		        return !is_null($value);
 	        });
             $total_amount += $amount * $item['quantity'];
         }
