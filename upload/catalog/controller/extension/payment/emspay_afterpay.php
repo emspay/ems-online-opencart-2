@@ -141,7 +141,7 @@ class ControllerExtensionPaymentEmspayAfterPay extends Controller
                 $this->model_checkout_order->addOrderHistory(
                     $emsOrder->getMerchantOrderId(),
                     $this->emsHelper->getOrderStatus($emsOrder->getStatus(), $this->config),
-                    'EMS PAY AfterPay order: '.$emsOrder->id()->toString(),
+                    'EMS Online AfterPay order: '.$emsOrder->id()->toString(),
                     true
                 );
                 $this->response->redirect($this->emsHelper->getSucceedUrl($this, $this->session->data['order_id']));
@@ -210,7 +210,7 @@ class ControllerExtensionPaymentEmspayAfterPay extends Controller
     }
 
     /**
-     * Generate EMS PAY iDEAL order.
+     * Generate EMS Online iDEAL order.
      *
      * @param array
      * @return \GingerPayments\Payment\Order

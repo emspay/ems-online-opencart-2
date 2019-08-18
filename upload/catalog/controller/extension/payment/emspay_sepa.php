@@ -16,7 +16,7 @@ class ControllerExtensionPaymentEmspaySepa extends Controller
     const MODULE_NAME = 'emspay_sepa';
 
     /**
-     *  EMS PAY bank transfer details
+     *  EMS Online bank transfer details
      */
     const EMS_BIC = 'ABNANL2A';
     const EMS_IBAN = 'NL79ABNA0842577610';
@@ -71,14 +71,14 @@ class ControllerExtensionPaymentEmspaySepa extends Controller
                 $this->model_checkout_order->addOrderHistory(
                     $emsOrder->getMerchantOrderId(),
                     $this->emsHelper->getOrderStatus($emsOrder->getStatus(), $this->config),
-                    'EMS PAY Bank Transfer order: '.$emsOrder->id()->toString(),
+                    'EMS Online Bank Transfer order: '.$emsOrder->id()->toString(),
                     true
                 );
 
                 $this->model_checkout_order->addOrderHistory(
                     $emsOrder->getMerchantOrderId(),
                     $this->emsHelper->getOrderStatus($emsOrder->getStatus(), $this->config),
-                    'EMS PAY Bank Transfer Reference ID: '.$paymentReference,
+                    'EMS Online Bank Transfer Reference ID: '.$paymentReference,
                     true
                 );
 
@@ -102,7 +102,7 @@ class ControllerExtensionPaymentEmspaySepa extends Controller
     }
 
     /**
-     * Generate EMS PAY Payments order.
+     * Generate EMS Online Payments order.
      *
      * @param array
      * @return \GingerPayments\Payment\Order

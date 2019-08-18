@@ -123,7 +123,7 @@ class ControllerExtensionPaymentEmspayIdeal extends Controller
     }
 
     /**
-     * Generate EMS PAY iDEAL order.
+     * Generate EMS Online iDEAL order.
      *
      * @param array
      * @return \GingerPayments\Payment\Order
