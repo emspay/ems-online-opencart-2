@@ -6,7 +6,7 @@
 class EmsHelper
 {
     /**
-     * EMS PAY OpenCart plugin version
+     * EMS Online OpenCart plugin version
      */
     const PLUGIN_VERSION = '1.4.8';
 
@@ -21,7 +21,7 @@ class EmsHelper
     protected $paymentMethod;
 
     /**
-     * EMS PAY Order statuses
+     * EMS Online Order statuses
      */
     const EMS_STATUS_EXPIRED = 'expired';
     const EMS_STATUS_NEW = 'new';
@@ -100,7 +100,7 @@ class EmsHelper
     }
 
     /**
-     * Method maps EMS PAY order status to OpenCart specific
+     * Method maps EMS Online order status to OpenCart specific
      *
      * @param string $emsOrderStatus
      * @return string
@@ -414,7 +414,7 @@ class EmsHelper
             $paymentMethod->model_checkout_order->addOrderHistory(
                 $emsOrder->getMerchantOrderId(),
                 $paymentMethod->emsHelper->getOrderStatus($emsOrder->getStatus(), $paymentMethod->config),
-                'EMS PAY order: '.$emsOrder->id()->toString(),
+                'EMS Online order: '.$emsOrder->id()->toString(),
                 true
             );
             if ($emsOrder->status()->isCompleted()) {
@@ -653,7 +653,7 @@ class EmsHelper
     }
 
     /**
-     * Obtain EMS PAY order id from order history.
+     * Obtain EMS Online order id from order history.
      *
      * @param array $orderHistory
      * @return mixed
