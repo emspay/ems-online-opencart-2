@@ -118,7 +118,7 @@ class ControllerExtensionPaymentEmspayKlarna extends Controller
                 $this->model_checkout_order->addOrderHistory(
                     $emsOrder->getMerchantOrderId(),
                     $this->emsHelper->getOrderStatus($emsOrder->getStatus(), $this->config),
-                    'EMS PAY Klarna order: '.$emsOrder->id()->toString(),
+                    'EMS Online Klarna order: '.$emsOrder->id()->toString(),
                     true
                 );
                 $this->response->redirect($this->emsHelper->getSucceedUrl($this, $this->session->data['order_id']));
@@ -172,7 +172,7 @@ class ControllerExtensionPaymentEmspayKlarna extends Controller
     }
 
     /**
-     * Generate EMS PAY iDEAL order.
+     * Generate EMS Online iDEAL order.
      *
      * @param array
      * @return \GingerPayments\Payment\Order

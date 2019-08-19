@@ -6,7 +6,7 @@
 class ControllerExtensionPaymentEmspayBancontact extends Controller
 {
     /**
-     * Default currency for EMS PAY Order
+     * Default currency for EMS Online Order
      */
     const DEFAULT_CURRENCY = 'EUR';
 

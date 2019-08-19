@@ -109,7 +109,7 @@ class ControllerExtensionPaymentEmspayPayconiq extends Controller
     }
 
     /**
-     * Generate EMS PAY order.
+     * Generate EMS Online order.
      *
      * @param array
      * @return \GingerPayments\Payment\Order
