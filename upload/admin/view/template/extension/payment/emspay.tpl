@@ -307,7 +307,7 @@
                             </label>
                             <label class="radio-inline">
                                 <input type="radio" name="ems_send_webhook" value="1"
-                                <?php if ( !is_null($ems_send_webhook) and !$ems_send_webhook) { ?> checked="checked" <?php } ?> />
+                                <?php if (!is_null($ems_send_webhook) and !$ems_send_webhook) { ?> checked="checked" <?php } ?> />
                                 <?php echo $text_yes; ?>
                             </label>
                         </div>
