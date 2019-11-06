@@ -109,7 +109,7 @@ class ControllerExtensionPaymentEmspayApplePay extends Controller
     }
 
     /**
-     * Generate order.
+     * Generate EMS Apple Pay.
      *
      * @param array
      * @return \GingerPayments\Payment\Order

@@ -299,7 +299,7 @@ final class Client
         $webhookUrl = null
     ) {
         return $this->postOrder(
-            Order::createWithCreditCard(
+            Order::createWithApplePay(
                 $amount,
                 $currency,
                 $description,

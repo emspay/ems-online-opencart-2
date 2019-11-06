@@ -204,7 +204,7 @@ final class Order
      * @param null $webhookUrl
      * @return Order
      */
-    public static function createwithApplePay(
+    public static function createWithApplePay(
         $amount,
         $currency,
         $description = null,
