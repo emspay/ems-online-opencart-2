@@ -164,7 +164,7 @@ class EmsHelper
                 $orderInfo['shipping_postcode']." ".$orderInfo['shipping_city']
             ))),
             'locale' => self::formatLocale($orderInfo['language_code']),
-            'ip_address' => $_SERVER['REMOTE_ADDR'],
+            'ip_address' => filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP),
             'gender' => $gender,
             'birthdate' => $dob,
             'additional_addresses' => [
@@ -636,7 +636,7 @@ class EmsHelper
         if (strlen($ipList) > 0) {
             $ipWhitelist = array_map('trim', explode(',', $ipList));
 
-            if (!in_array($_SERVER['REMOTE_ADDR'], $ipWhitelist)) {
+            if (!in_array(filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP), $ipWhitelist)) {
                 return false;
             }
         }
