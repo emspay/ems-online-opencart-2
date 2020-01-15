@@ -371,7 +371,7 @@ final class Order
      *
      * @return Order
      */
-    public static function createWithKlarna(
+    public static function createWithKlarnaPayLater(
         $amount,
         $currency,
         $description = null,
@@ -386,7 +386,7 @@ final class Order
         return static::create(
             $amount,
             $currency,
-            PaymentMethod::KLARNA,
+            PaymentMethod::KLARNA_PAY_LATER,
             [],
             $description,
             $merchantOrderId,

@@ -1,6 +1,6 @@
 <?php
 
-class ControllerExtensionPaymentEmspayKlarna extends Controller
+class ControllerExtensionPaymentEmspayKlarnaPayLater extends Controller
 {
     /**
      * Default currency for Order
@@ -10,7 +10,7 @@ class ControllerExtensionPaymentEmspayKlarna extends Controller
     /**
      * Payments module name
      */
-    const MODULE_NAME = 'emspay_klarna';
+    const MODULE_NAME = 'emspay_klarnapaylater';
 
     /**
      * @var \GingerPayments\Payment\Client
@@ -30,11 +30,11 @@ class ControllerExtensionPaymentEmspayKlarna extends Controller
         parent::__construct($registry);
 
         $this->emsHelper = new EmsHelper(static::MODULE_NAME);
-        $this->ems = $this->emsHelper->getClientForKlarna($this->config);
+        $this->ems = $this->emsHelper->getClientForKlarnaPayLater($this->config);
     }
     
     /**
-     * Method is an event trigger for capturing Klarna shipped status.
+     * Method is an event trigger for capturing Klarna Pay Later shipped status.
      *
      * @param $route
      * @param $data
@@ -104,6 +104,7 @@ class ControllerExtensionPaymentEmspayKlarna extends Controller
 
             if ($orderInfo) {
                 $emsOrderData = $this->emsHelper->getOrderData($orderInfo, $this);
+
                 $emsOrder = $this->createOrder($emsOrderData);
 
                 if ($emsOrder->status()->isError()) {
@@ -118,7 +119,7 @@ class ControllerExtensionPaymentEmspayKlarna extends Controller
                 $this->model_checkout_order->addOrderHistory(
                     $emsOrder->getMerchantOrderId(),
                     $this->emsHelper->getOrderStatus($emsOrder->getStatus(), $this->config),
-                    'EMS Online Klarna order: '.$emsOrder->id()->toString(),
+                    'EMS Online Klarna Pay Later order: '.$emsOrder->id()->toString(),
                     true
                 );
                 $this->response->redirect($this->emsHelper->getSucceedUrl($this, $this->session->data['order_id']));
@@ -179,7 +180,7 @@ class ControllerExtensionPaymentEmspayKlarna extends Controller
      */
     protected function createOrder(array $orderData)
     {
-        return $this->ems->createKlarnaOrder(
+        return $this->ems->createKlarnaPayLaterOrder(
             $orderData['amount'],            // Amount in cents
             $orderData['currency'],          // Currency
             $orderData['description'],       // Description

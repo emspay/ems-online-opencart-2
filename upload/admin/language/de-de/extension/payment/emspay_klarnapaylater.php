@@ -3,8 +3,8 @@
 /**
  * General Admin Settings Page
  */
-$_['heading_title'] = 'EMS Online: Klarna';
-$_['text_emspay_klarna'] = '<img src="view/image/payment/emspay_klarna.png" alt="EMS Online" title="EMS Online" />';
+$_['heading_title'] = 'EMS Online: Klarna Pay Later';
+$_['text_emspay_klarna'] = '<img src="view/image/payment/emspay_klarnapaylater.png" alt="EMS Online" title="EMS Online" />';
 $_['text_extension'] = 'Extensions';
 
 /**
@@ -33,8 +33,8 @@ $_['text_enabled'] = 'Aktiviert';
 $_['text_disabled'] = 'Deaktiviert';
 $_['text_payments'] = 'Zahlungen';
 $_['text_issuer_id'] = 'SWIFT/BIC';
-$_['text_settings_saved'] = 'EMS Online: Klarna Einstellungen aktualisiert!';
-$_['text_edit_ems'] = 'Bearbeiten EMS Online: Klarna Einstellungen';
+$_['text_settings_saved'] = 'EMS Online: Klarna Pay Later Einstellungen aktualisiert!';
+$_['text_edit_ems'] = 'Bearbeiten EMS Online: Klarna Pay Later Einstellungen';
 $_['text_yes'] = 'Ja';
 $_['text_no'] = 'Nien';
 
@@ -48,7 +48,7 @@ $_['error_missing_api_key'] = 'EMS Online API schlüssel ist erforderlich!';
  */
 $_['info_help_api_key'] = 'Duplizieren Sie Ihre EMS Online API Schlüssel von Merchant Portal.';
 $_['info_help_total'] = 'Die Zahlungsmethode wird gezeigt wenn die kasse insgesamt der Mindestbetrag erreicht.';
-$_['info_plugin_not_configured'] = 'EMS Online: Klarna plugin ist nicht konfiguriert.';
+$_['info_plugin_not_configured'] = 'EMS Online: Klarna Pay Later plugin ist nicht konfiguriert.';
 $_['info_help_klarna_ip_filter'] = 'Wenn sie eingegeben werden, wird nur für diese IPs die Zahlungsmethode angezeigt. (Beispiel: 128.0.0.1, 255.255.255.255)';
 $_['entry_klarna_ip_filter'] = 'IP-Filterung:';
 $_['entry_klarna_test_api_key'] = 'Test API schlüssel:';

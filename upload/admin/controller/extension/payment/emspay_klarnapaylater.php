@@ -1,8 +1,8 @@
 <?php
 
-class ControllerExtensionPaymentEmspayKlarna extends Controller
+class ControllerExtensionPaymentEmspayKlarnaPayLater extends Controller
 {
-    const EMS_MODULE = 'emspay_klarna';
+    const EMS_MODULE = 'emspay_klarnapaylater';
 
     public function index()
     {
@@ -19,22 +19,22 @@ class ControllerExtensionPaymentEmspayKlarna extends Controller
         $this->load->model('extension/event');
 
         $this->model_extension_event->addEvent(
-            'emspay_klarna_edit_order',
+            'emspay_klarnapaylater_edit_order',
             'catalog/controller/api/order/edit/after',
-            'extension/payment/emspay_klarna/capture'
+            'extension/payment/emspay_klarnapaylater/capture'
         );
 
         $this->model_extension_event->addEvent(
-            'emspay_klarna_add_history',
+            'emspay_klarnapaylater_add_history',
             'catalog/controller/api/order/history/after',
-            'extension/payment/emspay_klarna/capture'
+            'extension/payment/emspay_klarnapaylater/capture'
         );
     }
 
     public function uninstall()
     {
         $this->load->model('extension/event');
-        $this->model_extension_event->deleteEvent('emspay_klarna_edit_order');
-        $this->model_extension_event->deleteEvent('emspay_klarna_add_history');
+        $this->model_extension_event->deleteEvent('emspay_klarnapaylater_edit_order');
+        $this->model_extension_event->deleteEvent('emspay_klarnapaylater_add_history');
     }
 }

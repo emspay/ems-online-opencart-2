@@ -70,10 +70,10 @@ class EmsHelper
      * @param object $config
      * @return \GingerPayments\Payment\Client
      */
-    public function getClientForKlarna($config)
+    public function getClientForKlarnaPayLater($config)
     {
         return $this->getGignerClinet(
-                $config->get($this->getPaymentSettingsFieldName('klarna_test_api_key'))
+                $config->get($this->getPaymentSettingsFieldName('klarnapaynow_test_api_key'))
                 ?: $config->get($this->getPaymentSettingsFieldName('api_key')),
                 $config->get($this->getPaymentSettingsFieldName('bundle_cacert'))
                );
