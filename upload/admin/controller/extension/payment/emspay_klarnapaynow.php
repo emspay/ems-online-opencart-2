@@ -1,8 +1,8 @@
 <?php
 
-class ControllerExtensionPaymentEmspaySofort extends Controller
+class ControllerExtensionPaymentEmspayKlarnaPayNow extends Controller
 {
-    const EMS_MODULE = 'emspay_sofort';
+    const EMS_MODULE = 'emspay_klarnapaynow';
 
     public function index()
     {

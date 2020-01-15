@@ -3,7 +3,7 @@
 /**
  * Frontend translations
  */
-$_['text_title'] = 'SOFORT';
+$_['text_title'] = 'Klarna Pay Now';
 $_['text_payment_terms'] = '';
 $_['text_transaction'] = 'Betaling: ';
 

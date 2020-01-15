@@ -4,7 +4,7 @@
  * General Admin Settings Page
  */
 $_['heading_title'] = 'EMS Online: Klarna Pay Later';
-$_['text_emspay_klarna'] = '<img src="view/image/payment/emspay_klarnapaylater.png" alt="EMS Online" title="EMS Online" />';
+$_['text_emspay_klarnapaylater'] = '<img src="view/image/payment/emspay_klarnapaylater.png" alt="EMS Online" title="EMS Online" />';
 $_['text_extension'] = 'Extensions';
 
 /**

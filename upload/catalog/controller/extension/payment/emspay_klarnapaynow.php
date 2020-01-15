@@ -3,7 +3,7 @@
 /**
  * Class ControllerPaymentEmspayCc
  */
-class ControllerExtensionPaymentEmspaySofort extends Controller
+class ControllerExtensionPaymentEmspayKlarnaPayNow extends Controller
 {
     /**
      * Default currency for Order
@@ -13,7 +13,7 @@ class ControllerExtensionPaymentEmspaySofort extends Controller
     /**
      * Payments module name
      */
-    const MODULE_NAME = 'emspay_sofort';
+    const MODULE_NAME = 'emspay_klarnapaynow';
 
     /**
      * @var \GingerPayments\Payment\Client
@@ -116,7 +116,7 @@ class ControllerExtensionPaymentEmspaySofort extends Controller
      */
     protected function createOrder(array $orderData)
     {
-        return $this->ems->createSofortOrder(
+        return $this->ems->createKlarnaPayNowOrder(
             $orderData['amount'],            // Amount in cents
             $orderData['currency'],          // Currency
             [],                              // Payment Method Details

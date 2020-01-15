@@ -4,7 +4,7 @@
  * General Admin Settings Page
  */
 $_['heading_title'] = 'EMS Online: Klarna Pay Later';
-$_['text_emspay_klarna'] = '<img src="view/image/payment/emspay_klarnapaylater.png" alt="EMS Online" title="EMS Online" />';
+$_['text_emspay_klarnapaylater'] = '<img src="view/image/payment/emspay_klarnapaylater.png" alt="EMS Online" title="EMS Online" />';
 $_['text_extension'] = 'Extensions';
 
 /**
@@ -49,7 +49,7 @@ $_['error_missing_api_key'] = 'EMS Online API Key is required!';
 $_['info_help_api_key'] = 'Get your EMS Online API key from Payments merchant portal.';
 $_['info_help_total'] = 'The payment method will only be presented if the total checkout amount of an order is higher than this threshold.';
 $_['info_plugin_not_configured'] = 'EMS Online: Klarna Pay Later plugin is not configured.';
-$_['info_help_klarna_ip_filter'] = 'If entered, only for those IPs payment method will be displayed. (Example: 128.0.0.1, 255.255.255.255)';
-$_['entry_klarna_ip_filter'] = 'IP Filtering:';
-$_['entry_klarna_test_api_key'] = 'Test API Key:';
-$_['info_help_klarna_test_api_key'] = 'If entered this API key will be used for testing purposes.';
+$_['info_help_klarnapaylater_ip_filter'] = 'If entered, only for those IPs payment method will be displayed. (Example: 128.0.0.1, 255.255.255.255)';
+$_['entry_klarnapaylater_ip_filter'] = 'IP Filtering:';
+$_['entry_klarnapaylater_test_api_key'] = 'Test API Key:';
+$_['info_help_klarnapaylater_test_api_key'] = 'If entered this API key will be used for testing purposes.';

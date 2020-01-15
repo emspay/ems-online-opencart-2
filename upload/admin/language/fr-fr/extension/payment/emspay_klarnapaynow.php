@@ -3,8 +3,8 @@
 /**
  * General Admin Settings Page
  */
-$_['heading_title'] = 'EMS Online: SOFORT';
-$_['text_emspay_sofort'] = '<img src="view/image/payment/emspay_sofort.png" alt="EMS Online" title="EMS Online" />';
+$_['heading_title'] = 'EMS Online: Klarna Pay Now';
+$_['text_emspay_klarnapaynow'] = '<img src="view/image/payment/emspay_klarnapaynow.png" alt="EMS Online" title="EMS Online" />';
 $_['text_extension'] = 'Extensions';
 
 /**
@@ -33,8 +33,8 @@ $_['text_enabled'] = 'Activé';
 $_['text_disabled'] = 'Désactivé';
 $_['text_payments'] = 'Paiements';
 $_['text_issuer_id'] = 'SWIFT/BIC';
-$_['text_settings_saved'] = 'EMS Online: Paramètres SOFORT mis a jour!';
-$_['text_edit_ems'] = 'Modifier EMS Online: Paramètres SOFORT';
+$_['text_settings_saved'] = 'EMS Online: Paramètres Klarna Pay Now mis a jour!';
+$_['text_edit_ems'] = 'Modifier EMS Online: Paramètres Klarna Pay Now';
 $_['text_yes'] = 'Oui';
 $_['text_no'] = 'Non';
 
@@ -48,7 +48,7 @@ $_['error_missing_api_key'] = 'EMS Online clé API est obligatoire!';
  */
 $_['info_help_api_key'] = 'Obtenez votre EMS Online clé API du portail marchand.';
 $_['info_help_total'] = 'Le total de la caisse que la commande doit atteindre avant que ce mode de paiement devient actif.';
-$_['info_plugin_not_configured'] = 'EMS Online: Plugin SOFORT est pas configuré.';
+$_['info_plugin_not_configured'] = 'EMS Online: Plugin Klarna Pay Now est pas configuré.';
 $_['info_help_klarna_ip_filter'] = 'Si cette champs est rempli, uniquement pour ces adresses IP le mode de paiement sera affiché. (Par Ex: 128.0.0.1, 255.255.255.255)';
 $_['entry_klarna_ip_filter'] = 'le filtrage IP:';
 $_['entry_klarna_test_api_key'] = 'clé API de Test:';
