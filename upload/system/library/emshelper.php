@@ -21,6 +21,12 @@ class EmsHelper
     protected $paymentMethod;
 
     /**
+     *  Default Ginger endpoint
+     */
+
+    const GINGER_ENDPOINT = 'https://api.online.emspay.eu';
+
+    /**
      * EMS Online Order statuses
      */
     const EMS_STATUS_EXPIRED = 'expired';
@@ -36,14 +42,21 @@ class EmsHelper
      */
     public function __construct($paymentMethod)
     {
-        require_once(DIR_SYSTEM.'library/emspay/ems-php/vendor/autoload.php');
+        require_once(DIR_SYSTEM.'library/emspay/ginger-php/vendor/autoload.php');
 
         $this->paymentMethod = $paymentMethod;
     }
 
     /**
+     *  func get Cacert.pem path
+     */
+    public static function getCaCertPath(){
+        return dirname(__FILE__).'/emspay/ginger-php/assets/cacert.pem';
+    }
+
+    /**
      * @param object $config
-     * @return \GingerPayments\Payment\Client
+     * @return \Ginger\ApiClient
      */
     public function getClient($config)
     {
@@ -55,7 +68,7 @@ class EmsHelper
     
     /**
      * @param object $config
-     * @return \GingerPayments\Payment\Client
+     * @return \Ginger\ApiClient
      */
     public function getClientForAfterPay($config)
     {
@@ -68,7 +81,7 @@ class EmsHelper
     
     /**
      * @param object $config
-     * @return \GingerPayments\Payment\Client
+     * @return \Ginger\ApiClient
      */
     public function getClientForKlarnaPayLater($config)
     {
@@ -86,15 +99,18 @@ class EmsHelper
      * @param string $apiKey
      * @param string $product
      * @param boolean $useBundle
-     * @return \GingerPayments\Payment\Client
+     * @return \Ginger\ApiClient
      */
     protected function getGignerClinet($apiKey, $useBundle = false)
     {
-        $ems = \GingerPayments\Payment\Ginger::createClient($apiKey);
-
-        if ($useBundle) {
-            $ems->useBundledCA();
-        }
+        $ems = \Ginger\Ginger::createClient(
+            EmsHelper::GINGER_ENDPOINT,
+            $apiKey,
+            $useBundle ?
+                [
+                    CURLOPT_CAINFO => EmsHelper::getCaCertPath()
+                ] : []
+        );
 
         return $ems;
     }
@@ -289,12 +305,12 @@ class EmsHelper
     {
         if ($webhookData['event'] == 'status_changed') {
             $emsOrder = $paymentMethod->ems->getOrder($webhookData['order_id']);
-            $orderInfo = $paymentMethod->model_checkout_order->getOrder($emsOrder->getMerchantOrderId());
+            $orderInfo = $paymentMethod->model_checkout_order->getOrder($emsOrder['merchant_order_id']);
             if ($orderInfo) {
                 $paymentMethod->model_checkout_order->addOrderHistory(
-                    $emsOrder->getMerchantOrderId(),
-                    $paymentMethod->emsHelper->getOrderStatus($emsOrder->getStatus(), $paymentMethod->config),
-                    'Status changed for order: '.$emsOrder->id()->toString(),
+                    $emsOrder['merchant_order_id'],
+                    $paymentMethod->emsHelper->getOrderStatus($emsOrder['status'], $paymentMethod->config),
+                    'Status changed for order: '.$emsOrder['id'],
                     true
                 );
             }
@@ -311,8 +327,8 @@ class EmsHelper
         $orderId = $paymentMethod->request->get['order_id'];
         $emsOrder = $paymentMethod->ems->getOrder($orderId);
 
-        if ($emsOrder->status()->isProcessing()
-            || $emsOrder->status()->isNew()
+        if ($emsOrder['status'] == 'processing'
+            || $emsOrder['status'] == 'new'
         ) {
             $response = [
                 'redirect' => false
@@ -399,7 +415,7 @@ class EmsHelper
     protected function getOrderIdFromPaymentMethod($paymentMethod)
     {
         $emsOrder = $paymentMethod->ems->getOrder($paymentMethod->request->get['order_id']);
-        return (!empty($emsOrder) && $emsOrder->getMerchantOrderId() !== null) ? $emsOrder->getMerchantOrderId() : '';
+        return (!empty($emsOrder) && $emsOrder['merchant_order_id'] !== null) ? $emsOrder['merchant_order_id'] : '';
     }
     
     /**
@@ -409,17 +425,17 @@ class EmsHelper
     {
         $paymentMethod->load->model('checkout/order');
         $emsOrder = $paymentMethod->ems->getOrder($paymentMethod->request->get['order_id']);
-        $orderInfo = $paymentMethod->model_checkout_order->getOrder($emsOrder->getMerchantOrderId());
+        $orderInfo = $paymentMethod->model_checkout_order->getOrder($emsOrder['merchant_order_id']);
         if ($orderInfo) {
             $paymentMethod->model_checkout_order->addOrderHistory(
-                $emsOrder->getMerchantOrderId(),
-                $paymentMethod->emsHelper->getOrderStatus($emsOrder->getStatus(), $paymentMethod->config),
-                'EMS Online order: '.$emsOrder->id()->toString(),
+                $emsOrder['merchant_order_id'],
+                $paymentMethod->emsHelper->getOrderStatus($emsOrder['status'], $paymentMethod->config),
+                'EMS Online order: '.$emsOrder['id'],
                 true
             );
-            if ($emsOrder->status()->isCompleted()) {
+            if ($emsOrder['status'] == 'completed') {
                 $paymentMethod->response->redirect($this->getSucceedUrl($paymentMethod, $orderInfo['order_id']));
-            } elseif ($emsOrder->status()->isProcessing() || $emsOrder->status()->isNew()) {
+            } elseif ($emsOrder['status'] == 'processing' || $emsOrder['status'] == 'new') {
                 $paymentMethod->response->redirect($paymentMethod->emsHelper->getProcessingUrl($paymentMethod));
             } else {
                 $paymentMethod->response->redirect($this->getFailureUrl($paymentMethod, $orderInfo['order_id']));
@@ -542,9 +558,9 @@ class EmsHelper
 	        $orderLines[] = array_filter([
 		        'url' => $paymentMethod->url->link('product/product', 'product_id='.$item['product_id']),
 		        'name' => $item['name'],
-		        'type' => \GingerPayments\Payment\Order\OrderLine\Type::PHYSICAL,
+		        'type' => 'physical',
 		        'amount' => $amount,
-		        'currency' => \GingerPayments\Payment\Currency::EUR,
+		        'currency' => 'EUR',
 		        'quantity' => $item['quantity'],
 		        'image_url' => $paymentMethod->model_tool_image->resize($item['image'], 100, 100),
 		        'vat_percentage' => $this->getOrderLineTaxRate($paymentMethod, $item['price'], $item['tax_class_id']),
@@ -567,9 +583,9 @@ class EmsHelper
         if (($totalAmountInCents - $total_amount) != 0) {
             $orderLines[] = [
                 'name' => 'Overig',
-                'type' => \GingerPayments\Payment\Order\OrderLine\Type::PHYSICAL,
+                'type' => 'physical',
                 'amount' => $totalAmountInCents - $total_amount,
-                'currency' => \GingerPayments\Payment\Currency::EUR,
+                'currency' => 'EUR',
                 'quantity' => 1,
                 'vat_percentage' => 2100,
                 'merchant_order_line_id' => 'miscellaneous',
@@ -588,7 +604,7 @@ class EmsHelper
 
         return [
             'name' => $shippingMethod['title'],
-            'type' => \GingerPayments\Payment\Order\OrderLine\Type::SHIPPING_FEE,
+            'type' => 'shipping_fee',
             'amount' => static::formatAmountToCents(
                 $paymentMethod->tax->calculate(
                     $shippingMethod['cost'],
@@ -596,7 +612,7 @@ class EmsHelper
                     true
                 )
             ),
-            'currency' => \GingerPayments\Payment\Currency::EUR,
+            'currency' => 'EUR',
             'vat_percentage' => $this->getOrderLineTaxRate(
                 $paymentMethod,
                 $shippingMethod['cost'],
