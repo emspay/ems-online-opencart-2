@@ -13,7 +13,7 @@ class ControllerExtensionPaymentEmspayKlarnaPayLater extends Controller
     const MODULE_NAME = 'emspay_klarnapaylater';
 
     /**
-     * @var \GingerPayments\Payment\Client
+     * @var \Ginger\ApiClient
      */
     public $ems;
 
