@@ -125,7 +125,6 @@ class ControllerExtensionPaymentEmspayBancontact extends Controller
             'customer' => $orderData['customer'],                            // Customer information
             'extra' => $orderData['plugin_version'],                         // Extra information
             'webhook_url' => $orderData['webhook_url'],                      // Webhook URL
-            'order_lines' => $orderData['order_lines'],                      // Order lines
             'transactions' => [
                 [
                     'payment_method' => "bancontact"
