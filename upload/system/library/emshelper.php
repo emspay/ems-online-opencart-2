@@ -560,10 +560,10 @@ class EmsHelper
 		        'type' => 'physical',
 		        'amount' => $amount,
 		        'currency' => 'EUR',
-		        'quantity' => $item['quantity'],
+		        'quantity' => (int) $item['quantity'],
 		        'image_url' => $paymentMethod->model_tool_image->resize($item['image'], 100, 100),
 		        'vat_percentage' => $this->getOrderLineTaxRate($paymentMethod, $item['price'], $item['tax_class_id']),
-		        'merchant_order_line_id' => $item['product_id']
+		        'merchant_order_line_id' => (string) $item['product_id']
 	        ],
 	        function($value) {
 		        return !is_null($value);
@@ -618,7 +618,7 @@ class EmsHelper
                 $shippingMethod['tax_class_id']
             ),
             'quantity' => 1,
-            'merchant_order_line_id' => (count($paymentMethod->cart->getProducts()) + 1)
+            'merchant_order_line_id' => (string) (count($paymentMethod->cart->getProducts()) + 1)
         ];
     }
 

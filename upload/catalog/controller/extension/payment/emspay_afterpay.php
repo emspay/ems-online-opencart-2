@@ -28,7 +28,7 @@ class ControllerExtensionPaymentEmspayAfterPay extends Controller
     const MODULE_NAME = 'emspay_afterpay';
 
     /**
-     * @var \GingerPayments\Payment\Client
+     * @var \Ginger\ApiClient
      */
     public $ems;
 
@@ -129,19 +129,19 @@ class ControllerExtensionPaymentEmspayAfterPay extends Controller
                 $emsOrderData = $this->emsHelper->getOrderData($orderInfo, $this);
                 $emsOrder = $this->createOrder($emsOrderData);
 
-                if ($emsOrder->status()->isError()) {
+                if ($emsOrder['status'] == 'error') {
                     $this->language->load('extension/payment/'.static::MODULE_NAME);
-                    $this->session->data['error'] = $emsOrder->transactions()->current()->reason()->toString();
+                    $this->session->data['error'] = $emsOrder['transactions'][0]['reason'];
                     $this->session->data['error'] .= $this->language->get('error_another_payment_method');
                     $this->response->redirect($this->url->link('checkout/checkout'));
-                } elseif ($emsOrder->status()->isCancelled()) {
+                } elseif ($emsOrder['status'] == 'cancelled ') {
                     $this->response->redirect($this->getCancelledStatusUrl($this->session->data['order_id']));
                 }
 
                 $this->model_checkout_order->addOrderHistory(
-                    $emsOrder->getMerchantOrderId(),
-                    $this->emsHelper->getOrderStatus($emsOrder->getStatus(), $this->config),
-                    'EMS Online AfterPay order: '.$emsOrder->id()->toString(),
+                    $emsOrder['transactions'][0]['merchant_order_id'],
+                    $this->emsHelper->getOrderStatus($emsOrder['status'], $this->config),
+                    'EMS Online AfterPay order: '.$emsOrder['id'],
                     true
                 );
                 $this->response->redirect($this->emsHelper->getSucceedUrl($this, $this->session->data['order_id']));
@@ -213,22 +213,26 @@ class ControllerExtensionPaymentEmspayAfterPay extends Controller
      * Generate EMS Online iDEAL order.
      *
      * @param array
-     * @return \GingerPayments\Payment\Order
+     * @return array
      */
     protected function createOrder(array $orderData)
     {
-        return $this->ems->createAfterPayOrder(
-            $orderData['amount'],            // Amount in cents
-            $orderData['currency'],          // Currency
-            $orderData['description'],       // Description
-            $orderData['merchant_order_id'], // Merchant Order Id
-            null,                            // Return URL
-            null,                            // Expiration Period
-            $orderData['customer'],          // Customer information
-            $orderData['plugin_version'],    // Extra information
-            $orderData['webhook_url'],       // Webhook URL
-            $orderData['order_lines']        // Order lines
-        );
+        return $this->ems->createOrder([
+            'amount' => $orderData['amount'],                                // Amount in cents
+            'currency' => (string) $orderData['currency'],                   // Currency
+            'description' => $orderData['description'],                      // Description
+            'merchant_order_id' => (string) $orderData['merchant_order_id'], // Merchant Order Id
+            'return_url' => $orderData['return_url'],                        // Return URL
+            'customer' => $orderData['customer'],                            // Customer information
+            'extra' => $orderData['plugin_version'],                         // Extra information
+            'webhook_url' => $orderData['webhook_url'],                      // Webhook URL
+            'order_lines' => $orderData['order_lines'],                      // Order lines
+            'transactions' => [
+                [
+                    'payment_method' => "afterpay"
+                ]
+            ]
+        ]);
     }
     
     /**
