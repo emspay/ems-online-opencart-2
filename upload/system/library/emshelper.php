@@ -43,7 +43,6 @@ class EmsHelper
     public function __construct($paymentMethod)
     {
         require_once(DIR_SYSTEM.'library/emspay/ginger-php/vendor/autoload.php');
-
         $this->paymentMethod = $paymentMethod;
     }
 
@@ -165,7 +164,7 @@ class EmsHelper
         $dob = array_key_exists('dob', $paymentMethod->request->post)
             ? date("Y-m-d", strtotime($paymentMethod->request->post['dob'])) : null;
 
-        $customer = \GingerPayments\Payment\Common\ArrayFunctions::withoutNullValues([
+        $customer = array_filter([
             'address_type' => 'customer',
             'country' => $orderInfo['payment_iso_code_2'],
             'email_address' => $orderInfo['email'],

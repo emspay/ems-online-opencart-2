@@ -4,7 +4,7 @@
 
     <select name="issuer_id">
         <?php foreach($issuers as $issuer){ ?>
-        <option value="<?php echo $issuer->id(); ?>"><?php echo $issuer->name(); ?></option>
+        <option value="<?php echo $issuer['id']; ?>"><?php echo $issuer['name']; ?></option>
         <?php }?>
     </select>
 
