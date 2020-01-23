@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Class ControllerPaymentEmspayTikkiePaymentRequest
+ * Class ControllerPaymentEmspayWeChat
  */
-class ControllerExtensionPaymentEmspayTikkiePaymentRequest extends Controller
+class ControllerExtensionPaymentEmspayWeChat extends Controller
 {
     /**
      * Default currency for EMS Online Order
@@ -13,7 +13,7 @@ class ControllerExtensionPaymentEmspayTikkiePaymentRequest extends Controller
     /**
      * Payments module name
      */
-    const MODULE_NAME = 'emspay_tikkiepaymentrequest';
+    const MODULE_NAME = 'emspay_wechat';
 
     /**
      * @var \Ginger\ApiClient
@@ -109,7 +109,7 @@ class ControllerExtensionPaymentEmspayTikkiePaymentRequest extends Controller
     }
 
     /**
-     * Generate EMS Tikkie Payment Request
+     * Generate EMS WeChat.
      *
      * @param array
      * @return array
@@ -127,7 +127,7 @@ class ControllerExtensionPaymentEmspayTikkiePaymentRequest extends Controller
             'webhook_url' => $orderData['webhook_url'],                      // Webhook URL
             'transactions' => [
                 [
-                    'payment_method' => "tikkie-payment-request"
+                    'payment_method' => "wechat"
                 ]
             ]
         ]);
