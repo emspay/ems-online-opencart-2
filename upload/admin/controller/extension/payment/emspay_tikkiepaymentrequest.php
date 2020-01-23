@@ -1,8 +1,8 @@
 <?php
 
-class ControllerExtensionPaymentEmspaySepa extends Controller
+class ControllerExtensionPaymentEmspayTikkiePaymentRequest extends Controller
 {
-    const EMS_MODULE = 'emspay_sepa';
+    const EMS_MODULE = 'emspay_tikkiepaymentrequest';
 
     public function index()
     {
