@@ -3,7 +3,7 @@
 /**
  * General Admin Settings Page
  */
-$_['heading_title'] = 'EMS Online: Klarna Pay Later';
+$_['heading_title'] = 'EMS Online: Klarna Pay Now';
 $_['text_emspay_klarnapaynow'] = '<img src="view/image/payment/emspay_klarnapaynow.png" alt="EMS Online" title="EMS Online" />';
 $_['text_extension'] = 'Extensions';
 
@@ -33,8 +33,8 @@ $_['text_enabled'] = 'Enabled';
 $_['text_disabled'] = 'Disabled';
 $_['text_payments'] = 'Payments';
 $_['text_issuer_id'] = 'SWIFT/BIC';
-$_['text_settings_saved'] = 'EMS Online: Klarna Pay Later settings updated!';
-$_['text_edit_ems'] = 'Edit EMS Online: Klarna Pay Later Settings';
+$_['text_settings_saved'] = 'EMS Online: Klarna Pay Now settings updated!';
+$_['text_edit_ems'] = 'Edit EMS Online: Klarna Pay Now Settings';
 $_['text_yes'] = 'Yes';
 $_['text_no'] = 'No';
 
@@ -48,7 +48,7 @@ $_['error_missing_api_key'] = 'EMS Online API Key is required!';
  */
 $_['info_help_api_key'] = 'Get your EMS Online API key from Payments merchant portal.';
 $_['info_help_total'] = 'The payment method will only be presented if the total checkout amount of an order is higher than this threshold.';
-$_['info_plugin_not_configured'] = 'EMS Online: Klarna Pay Later plugin is not configured.';
+$_['info_plugin_not_configured'] = 'EMS Online: Klarna Pay Now plugin is not configured.';
 $_['info_help_klarna_ip_filter'] = 'If entered, only for those IPs payment method will be displayed. (Example: 128.0.0.1, 255.255.255.255)';
 $_['entry_klarna_ip_filter'] = 'IP Filtering:';
 $_['entry_klarna_test_api_key'] = 'Test API Key:';
