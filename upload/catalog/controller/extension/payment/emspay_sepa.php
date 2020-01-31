@@ -24,7 +24,7 @@ class ControllerExtensionPaymentEmspaySepa extends Controller
     const EMS_RESIDENCE = 'Amsterdam';
 
     /**
-     * @var \GingerPayments\Payment\Client
+     * @var Ginger\ApiClient\
      */
     public $ems;
 
@@ -59,9 +59,9 @@ class ControllerExtensionPaymentEmspaySepa extends Controller
                 $emsOrderData = $this->emsHelper->getOrderData($orderInfo, $this);
                 $emsOrder = $this->createOrder($emsOrderData);
 
-                if ($emsOrder->status()->isError()) {
+                if ($emsOrder['status'] == 'error') {
                     $this->language->load('extension/payment/'.static::MODULE_NAME);
-                    $this->session->data['error'] = $emsOrder->transactions()->current()->reason()->toString();
+                    $this->session->data['error'] = $emsOrder['transactions'][0]['reason'];
                     $this->session->data['error'] .= $this->language->get('error_another_payment_method');
                     $this->response->redirect($this->url->link('checkout/checkout'));
                 }
@@ -69,15 +69,15 @@ class ControllerExtensionPaymentEmspaySepa extends Controller
                 $paymentReference = $this->getBankPaymentReference($emsOrder);
 
                 $this->model_checkout_order->addOrderHistory(
-                    $emsOrder->getMerchantOrderId(),
-                    $this->emsHelper->getOrderStatus($emsOrder->getStatus(), $this->config),
-                    'EMS Online Bank Transfer order: '.$emsOrder->id()->toString(),
+                    $emsOrder['transactions'][0]['merchant_order_id'],
+                    $this->emsHelper->getOrderStatus($emsOrder['status'], $this->config),
+                    'EMS Online Bank Transfer order: '.$emsOrder['id'],
                     true
                 );
 
                 $this->model_checkout_order->addOrderHistory(
-                    $emsOrder->getMerchantOrderId(),
-                    $this->emsHelper->getOrderStatus($emsOrder->getStatus(), $this->config),
+                    $emsOrder['transactions'][0]['merchant_order_id'],
+                    $this->emsHelper->getOrderStatus($emsOrder['status'], $this->config),
                     'EMS Online Bank Transfer Reference ID: '.$paymentReference,
                     true
                 );
@@ -105,33 +105,35 @@ class ControllerExtensionPaymentEmspaySepa extends Controller
      * Generate EMS Online Payments order.
      *
      * @param array
-     * @return \GingerPayments\Payment\Order
+     * @return array
      */
     protected function createOrder(array $orderData)
     {
-        return $this->ems->createSepaOrder(
-            $orderData['amount'],            // Amount in cents
-            $orderData['currency'],          // Currency
-            $orderData['payment_info'],      // Payment information
-            $orderData['description'],       // Description
-            $orderData['merchant_order_id'], // Merchant Order Id
-            $orderData['return_url'],        // Return URL
-            null,                            // Expiration Period
-            $orderData['customer'],          // Customer information
-            $orderData['plugin_version'],    // Extra information
-            $orderData['webhook_url']        // Webhook URL
-        );
+        return $this->ems->createOrder([
+            'amount' => $orderData['amount'],                                // Amount in cents
+            'currency' => (string) $orderData['currency'],                   // Currency
+            'description' => $orderData['description'],                      // Description
+            'merchant_order_id' => (string) $orderData['merchant_order_id'], // Merchant Order Id
+            'return_url' => $orderData['return_url'],                        // Return URL
+            'customer' => $orderData['customer'],                            // Customer information
+            'extra' => $orderData['plugin_version'],                         // Extra information
+            'webhook_url' => $orderData['webhook_url'],                      // Webhook URL
+            'transactions' => [
+                [
+                    'payment_method' => "bank-transfer"
+                ]
+            ]
+        ]);
     }
 
     /**
      * Method gets payment reference from order.
      *
-     * @param \GingerPayments\Payment\Order $emsOrder
      * @return mixed
      */
-    protected function getBankPaymentReference(\GingerPayments\Payment\Order $emsOrder)
+    protected function getBankPaymentReference($emsOrder)
     {
-        return $emsOrder->transactions()->current()->paymentMethodDetails()->reference()->toString();
+        return $emsOrder['transactions'][0]['payment_method_details']['reference'];
     }
 
     /**
