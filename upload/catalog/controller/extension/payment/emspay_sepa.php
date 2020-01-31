@@ -69,14 +69,14 @@ class ControllerExtensionPaymentEmspaySepa extends Controller
                 $paymentReference = $this->getBankPaymentReference($emsOrder);
 
                 $this->model_checkout_order->addOrderHistory(
-                    $emsOrder['transactions'][0]['merchant_order_id'],
+                    $emsOrder['merchant_order_id'],
                     $this->emsHelper->getOrderStatus($emsOrder['status'], $this->config),
                     'EMS Online Bank Transfer order: '.$emsOrder['id'],
                     true
                 );
 
                 $this->model_checkout_order->addOrderHistory(
-                    $emsOrder['transactions'][0]['merchant_order_id'],
+                    $emsOrder['merchant_order_id'],
                     $this->emsHelper->getOrderStatus($emsOrder['status'], $this->config),
                     'EMS Online Bank Transfer Reference ID: '.$paymentReference,
                     true
