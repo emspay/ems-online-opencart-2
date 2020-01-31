@@ -16,7 +16,7 @@ class ControllerExtensionPaymentEmspayIdeal extends Controller
     const MODULE_NAME = 'emspay_ideal';
 
     /**
-     * @var \GingerPayments\Payment\Client
+     * @var \Ginger\ApiClient
      */
     public $ems;
 
@@ -65,14 +65,14 @@ class ControllerExtensionPaymentEmspayIdeal extends Controller
                 $emsOrderData = $this->emsHelper->getOrderData($orderInfo, $this);
                 $emsOrder = $this->createOrder($emsOrderData);
 
-                if ($emsOrder->status()->isError()) {
+                if ($emsOrder['status'] == 'error') {
                     $this->language->load('extension/payment/'.static::MODULE_NAME);
-                    $this->session->data['error'] = $emsOrder->transactions()->current()->reason()->toString();
+                    $this->session->data['error'] = $emsOrder['transactions'][0]['reason'];
                     $this->session->data['error'] .= $this->language->get('error_another_payment_method');
                     $this->response->redirect($this->url->link('checkout/checkout'));
                 }
 
-                $this->response->redirect($emsOrder->firstTransactionPaymentUrl());
+                $this->response->redirect($emsOrder['transactions'][0]['payment_url']);
             }
         } catch (\Exception $e) {
             $this->session->data['error'] = $e->getMessage();
@@ -126,21 +126,25 @@ class ControllerExtensionPaymentEmspayIdeal extends Controller
      * Generate EMS Online iDEAL order.
      *
      * @param array
-     * @return \GingerPayments\Payment\Order
+     * @return array
      */
     protected function createOrder(array $orderData)
     {
-        return $this->ems->createIdealOrder(
-            $orderData['amount'],            // Amount in cents
-            $orderData['currency'],          // Currency
-            $orderData['issuer_id'],         // Issuer ID (BIC/SWIFT)
-            $orderData['description'],       // Description
-            $orderData['merchant_order_id'], // Merchant Order Id
-            $orderData['return_url'],        // Return URL
-            null,                            // Expiration Period
-            $orderData['customer'],          // Customer information
-            $orderData['plugin_version'],    // Extra information
-            $orderData['webhook_url']        // Webhook URL
-        );
+        return $this->ems->createOrder([
+            'amount' => $orderData['amount'],                                // Amount in cents
+            'currency' => $orderData['currency'],                            // Currency
+            'description' => $orderData['description'],                      // Description
+            'merchant_order_id' => (string) $orderData['merchant_order_id'], // Merchant Order Id
+            'return_url' => $orderData['return_url'],                        // Return URL
+            'customer' => $orderData['customer'],                            // Customer information
+            'extra' => $orderData['plugin_version'],                         // Extra information
+            'webhook_url' => $orderData['webhook_url'],                      // Webhook URL
+            'transactions' => [
+                [
+                    'payment_method' => "ideal",
+                    'payment_method_details' => ['issuer_id' => $orderData['issuer_id']]
+                ]
+            ]
+        ]);
     }
 }

@@ -1,31 +1,16 @@
 <?php
 
-class ControllerExtensionPaymentEmspayAfterPay extends Controller
+class ControllerExtensionPaymentEmspayKlarnaPayLater extends Controller
 {
     /**
      * Default currency for Order
      */
     const DEFAULT_CURRENCY = 'EUR';
-    
-    /**
-     * T&C url for Dutch loclae
-     */
-    const TERMS_CONDITION_URL_NL = 'https://www.afterpay.nl/nl/algemeen/betalen-met-afterpay/betalingsvoorwaarden';
-    
-    /**
-     * T&C url for Belgium loclae
-     */
-    const TERMS_CONDITION_URL_BE = 'https://www.afterpay.be/be/footer/betalen-met-afterpay/betalingsvoorwaarden';
-    
-    /**
-     * Belgium iso 2 code
-     */
-    const BE_ISO_CODE = 'BE';
 
     /**
      * Payments module name
      */
-    const MODULE_NAME = 'emspay_afterpay';
+    const MODULE_NAME = 'emspay_klarnapaylater';
 
     /**
      * @var \Ginger\ApiClient
@@ -36,11 +21,6 @@ class ControllerExtensionPaymentEmspayAfterPay extends Controller
      * @var EmsHelper
      */
     public $emsHelper;
-    
-    /**
-     * @var array
-     */
-    protected static $allowedLocales = ['NL', 'BE'];
 
     /**
      * @param $registry
@@ -50,16 +30,15 @@ class ControllerExtensionPaymentEmspayAfterPay extends Controller
         parent::__construct($registry);
 
         $this->emsHelper = new EmsHelper(static::MODULE_NAME);
-        $this->ems = $this->emsHelper->getClientForAfterPay($this->config);
+        $this->ems = $this->emsHelper->getClientForKlarnaPayLater($this->config);
     }
     
     /**
-     * Method is an event trigger for capturing Klarna shipped status.
+     * Method is an event trigger for capturing Klarna Pay Later shipped status.
      *
      * @param $route
      * @param $data
      */
-    
     public function capture($route, $data)
     {
         $this->load->model('account/order');
@@ -73,6 +52,7 @@ class ControllerExtensionPaymentEmspayAfterPay extends Controller
             );
 
             if ($emsOrderId) {
+
                 $order = $this->model_checkout_order->getOrder(
                     $this->request->get['order_id']
                 );
@@ -103,17 +83,13 @@ class ControllerExtensionPaymentEmspayAfterPay extends Controller
 
         $data['button_confirm'] = $this->language->get('button_confirm');
         $data['text_select_bank'] = $this->language->get('text_select_bank');
-        $data['action'] = $this->url->link('extension/payment/'.static::MODULE_NAME.'/confirm');
-        $data['text_error_please_accept_tc'] = $this->language->get('error_please_accept_tc');
         $data['text_error_invalid_dob'] = $this->language->get('error_invalid_dob');
-        $data['text_terms_and_conditions'] = $this->language->get('text_terms_and_conditions');
-        $data['text_i_accept'] = $this->language->get('text_i_accept');
         $data['text_please_enter_dob'] = $this->language->get('text_please_enter_dob');
         $data['text_please_select_gender'] = $this->language->get('text_please_select_gender');
         $data['text_please_select_gender_male'] = $this->language->get('text_please_select_gender_male');
         $data['text_please_select_gender_female'] = $this->language->get('text_please_select_gender_female');
-        $data['terms_conditions_url'] = $this->getTermsAndConditionUrlByCountryIsoLocale($this->session->data['payment_address']['iso_code_2']);
-        $data['is_ap_allowed'] = $this->isPaymentAllowed($this->session->data['payment_address']['iso_code_2']);
+        $data['action'] = $this->url->link('extension/payment/'.static::MODULE_NAME.'/confirm');
+
         return $this->load->view('extension/payment/'.static::MODULE_NAME, $data);
     }
 
@@ -125,8 +101,10 @@ class ControllerExtensionPaymentEmspayAfterPay extends Controller
         try {
             $this->load->model('checkout/order');
             $orderInfo = $this->model_checkout_order->getOrder($this->session->data['order_id']);
+
             if ($orderInfo) {
                 $emsOrderData = $this->emsHelper->getOrderData($orderInfo, $this);
+
                 $emsOrder = $this->createOrder($emsOrderData);
 
                 if ($emsOrder['status'] == 'error') {
@@ -134,14 +112,14 @@ class ControllerExtensionPaymentEmspayAfterPay extends Controller
                     $this->session->data['error'] = $emsOrder['transactions'][0]['reason'];
                     $this->session->data['error'] .= $this->language->get('error_another_payment_method');
                     $this->response->redirect($this->url->link('checkout/checkout'));
-                } elseif ($emsOrder['status'] == 'cancelled ') {
-                    $this->response->redirect($this->getCancelledStatusUrl($this->session->data['order_id']));
+                } elseif ($emsOrder['status'] == 'cancelled') {
+                    $this->response->redirect($this->emsHelper->getFailureUrl($this, $this->session->data['order_id']));
                 }
 
                 $this->model_checkout_order->addOrderHistory(
                     $emsOrder['transactions'][0]['merchant_order_id'],
                     $this->emsHelper->getOrderStatus($emsOrder['status'], $this->config),
-                    'EMS Online AfterPay order: '.$emsOrder['id'],
+                    'EMS Online Klarna Pay Later order: '.$emsOrder['id'],
                     true
                 );
                 $this->response->redirect($this->emsHelper->getSucceedUrl($this, $this->session->data['order_id']));
@@ -152,21 +130,6 @@ class ControllerExtensionPaymentEmspayAfterPay extends Controller
         }
     }
 
-    /**
-     * @param $paymentMethod
-     * @param int $orderId
-     * @return string
-     */
-    public function getCancelledStatusUrl($orderId)
-    {
-        return htmlspecialchars_decode(
-            $this->url->link(
-                'extension/payment/emspay_afterpay_cancelled',
-                ['order_id' => $orderId]
-            )
-        );
-    }
-    
     /**
      * Callback Action
      */
@@ -229,34 +192,9 @@ class ControllerExtensionPaymentEmspayAfterPay extends Controller
             'order_lines' => $orderData['order_lines'],                      // Order lines
             'transactions' => [
                 [
-                    'payment_method' => "afterpay"
+                    'payment_method' => "klarna-pay-later"
                 ]
             ]
         ]);
-    }
-    
-    /**
-     * get t&c url based on user locale
-     *
-     * @param string $iso2code
-     * @return string
-     */
-    protected function getTermsAndConditionUrlByCountryIsoLocale($iso2code)
-    {
-        if (strtoupper($iso2code) === self::BE_ISO_CODE) {
-            return self::TERMS_CONDITION_URL_BE;
-        }
-        return self::TERMS_CONDITION_URL_NL;
-    }
-    
-    /**
-     * check is payment allowed for the locale
-     *
-     * @param type $iso2code
-     * @return bool
-     */
-    protected function isPaymentAllowed($iso2code)
-    {
-        return in_array(strtoupper($iso2code), self::$allowedLocales);
     }
 }

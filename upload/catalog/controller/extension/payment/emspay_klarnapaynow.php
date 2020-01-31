@@ -1,19 +1,19 @@
 <?php
 
 /**
- * Class ControllerPaymentEmspayBancontact
+ * Class ControllerPaymentEmspayCc
  */
-class ControllerExtensionPaymentEmspayBancontact extends Controller
+class ControllerExtensionPaymentEmspayKlarnaPayNow extends Controller
 {
     /**
-     * Default currency for EMS Online Order
+     * Default currency for Order
      */
     const DEFAULT_CURRENCY = 'EUR';
 
     /**
      * Payments module name
      */
-    const MODULE_NAME = 'emspay_bancontact';
+    const MODULE_NAME = 'emspay_klarnapaynow';
 
     /**
      * @var \Ginger\ApiClient
@@ -109,7 +109,7 @@ class ControllerExtensionPaymentEmspayBancontact extends Controller
     }
 
     /**
-     * Generate order.
+     * Generate EMS Online order.
      *
      * @param array
      * @return array
@@ -127,7 +127,7 @@ class ControllerExtensionPaymentEmspayBancontact extends Controller
             'webhook_url' => $orderData['webhook_url'],                      // Webhook URL
             'transactions' => [
                 [
-                    'payment_method' => "bancontact"
+                    'payment_method' => "klarna-pay-now"
                 ]
             ]
         ]);
