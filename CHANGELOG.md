@@ -9,3 +9,10 @@
 * Add Apple Pay
 * Fix in the beberlei/assert library
 * Fixed bug with field ip address
+
+** 1.0.3 **
+
+* Changed library from ems-php to ginger-php
+* Renamed Sofort to Klarna Pay Now
+* Renamed Klarna to Klarna Pay Later
+* Add American Express, Tikkie Payment Request, WeChat 
