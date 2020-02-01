@@ -117,7 +117,7 @@ class ControllerExtensionPaymentEmspayKlarnaPayLater extends Controller
                 }
 
                 $this->model_checkout_order->addOrderHistory(
-                    $emsOrder['transactions'][0]['merchant_order_id'],
+                    $emsOrder['merchant_order_id'],
                     $this->emsHelper->getOrderStatus($emsOrder['status'], $this->config),
                     'EMS Online Klarna Pay Later order: '.$emsOrder['id'],
                     true
