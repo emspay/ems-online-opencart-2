@@ -173,7 +173,6 @@ class EmsHelper
             'merchant_customer_id' => $orderInfo['customer_id'],
             'phone_numbers' => [$orderInfo['telephone']],
             'address' => implode("\n", array_filter(array(
-                $orderInfo['shipping_company'],
                 $orderInfo['shipping_address_1'],
                 $orderInfo['shipping_address_2'],
                 $orderInfo['shipping_postcode']." ".$orderInfo['shipping_city']
@@ -186,7 +185,6 @@ class EmsHelper
                 [
                     'address_type' => 'billing',
                     'address' => implode("\n", array_filter(array(
-                $orderInfo['payment_company'],
                 $orderInfo['payment_address_1'],
                 $orderInfo['payment_address_2'],
                 $orderInfo['payment_postcode']." ".$orderInfo['payment_city']
