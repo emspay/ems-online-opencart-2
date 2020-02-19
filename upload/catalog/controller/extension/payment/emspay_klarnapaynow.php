@@ -62,14 +62,12 @@ class ControllerExtensionPaymentEmspayKlarnaPayNow extends Controller
             if ($orderInfo) {
                 $emsOrderData = $this->emsHelper->getOrderData($orderInfo, $this);
                 $emsOrder = $this->createOrder($emsOrderData);
-
                 if ($emsOrder['status'] == 'error') {
                     $this->language->load('extension/payment/'.static::MODULE_NAME);
                     $this->session->data['error'] = $emsOrder['transactions'][0]['reason'];
                     $this->session->data['error'] .= $this->language->get('error_another_payment_method');
                     $this->response->redirect($this->url->link('checkout/checkout'));
                 }
-
                 $this->response->redirect($emsOrder['transactions'][0]['payment_url']);
             }
         } catch (\Exception $e) {
