@@ -83,9 +83,9 @@ class ControllerExtensionPaymentEmspayAfterPay extends Controller
                 );
 
                 if ($order['order_status_id'] == $capturedStatus) {
-					$ems_order = $this->ems->getOrder($emsOrderId);
-					$transaction_id = !empty(current($ems_order['transactions'])) ? current($ems_order['transactions'])['id'] : null;
-					$this->ems->captureOrderTransaction($ems_order['id'], $transaction_id);
+                    $ems_order = $this->ems->getOrder($emsOrderId);
+                    $transaction_id = !empty(current($ems_order['transactions'])) ? current($ems_order['transactions'])['id'] : null;
+                    $this->ems->captureOrderTransaction($ems_order['id'], $transaction_id);
                 };
             }
         } catch (\Exception $e) {
