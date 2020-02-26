@@ -63,9 +63,9 @@ class ControllerExtensionPaymentEmspayKlarnaPayLater extends Controller
                 );
 
                 if ($order['order_status_id'] == $capturedStatus) {
-                    $this->ems->setOrderCapturedStatus(
-                        $this->ems->getOrder($emsOrderId)
-                    );
+                    $ems_order = $this->ems->getOrder($emsOrderId);
+                    $transaction_id = !empty(current($ems_order['transactions'])) ? current($ems_order['transactions'])['id'] : null;
+                    $this->ems->captureOrderTransaction($ems_order['id'], $transaction_id);
                 };
             }
         } catch (\Exception $e) {

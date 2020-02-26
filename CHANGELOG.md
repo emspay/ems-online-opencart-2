@@ -21,3 +21,7 @@
 
 * Enable Klarna Pay Now 
 * Enable Klarna Pay Later
+
+** 1.0.5 **
+
+*Fix Captured and shipped functionality
