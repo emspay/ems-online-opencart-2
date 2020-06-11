@@ -122,7 +122,7 @@ class ControllerExtensionPaymentEmspayKlarnaPayLater extends Controller
                     'EMS Online Klarna Pay Later order: '.$emsOrder['id'],
                     true
                 );
-                $this->response->redirect($this->emsHelper->getSucceedUrl($this, $this->session->data['order_id']));
+                $this->response->redirect($emsOrder['transactions'][0]['payment_url']);
             }
         } catch (\Exception $e) {
             $this->session->data['error'] = $e->getMessage();
