@@ -26,6 +26,6 @@
 
 * Fix Captured and shipped functionality
 
-** 1.5.0 **
+** 1.4.9 **
 
 * Fixed payment URL for Klarna Pay Later
