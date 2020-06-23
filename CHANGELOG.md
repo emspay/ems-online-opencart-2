@@ -29,3 +29,7 @@
 ** 1.5.0 **
 
 * Fixed payment URL for Klarna Pay Later
+
+** 1.5.1 **
+
+* AfterPay payment access for countries can be changed in AfterPay settings.
