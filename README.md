@@ -33,6 +33,8 @@ Order Cancelled	Canceled
 Order Error	Failed
 Order Captured	Shipped
 
+Only for AfterPay payment: To allow AfterPay to be used for any other country just add its country code (in ISO 2 standard) to the "Countries available for AfterPay" field. Example: BE, NL, FR
+
 - Change field 'Status' to 'Enabled'.
 - Enable the CA bundle
 Enable this option to fix a cURL SSL Certificate issue that appears in some web-hosting environments where you do not have access to the PHP.ini file and therefore are not able to update server certificates.

@@ -32,4 +32,5 @@
 
 ** 1.5.1 **
 
-* AfterPay payment access for countries can be changed in AfterPay settings.
+* Added the ability for AfterPay to be available in the selected countries.
+* Added the AfterPay localization for Netherlands, German and French language.

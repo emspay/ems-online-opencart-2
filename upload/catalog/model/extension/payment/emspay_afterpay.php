@@ -2,7 +2,6 @@
 
 class ModelExtensionPaymentEmspayAfterpay extends Model
 {
-
     public function getMethod($address, $total)
     {
         $this->load->language('extension/payment/emspay_afterpay');
@@ -26,11 +25,11 @@ class ModelExtensionPaymentEmspayAfterpay extends Model
         }
 
         if (!EmsHelper::CountryValidator($this->config->get('emspay_afterpay_country_access'),
-            $this->session->data['payment_address']['iso_code_2'])){
+            $this->session->data['payment_address']['iso_code_2'])) {
 
             $status = false;
         }
-        
+
         if (!EmsHelper::ipIsEnabled($this->config->get('emspay_afterpay_afterpay_ip_filter'))) {
             $status = false;
         }
@@ -44,8 +43,7 @@ class ModelExtensionPaymentEmspayAfterpay extends Model
                 'terms' => $this->language->get('text_payment_terms'),
                 'sort_order' => $this->config->get('emspay_afterpay_sort_order')
             ];
-        } 
-
+        }
         return $method_data;
     }
 }

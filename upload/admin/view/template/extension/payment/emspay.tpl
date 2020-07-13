@@ -292,7 +292,7 @@
                         <div class="col-sm-10">
                             <input type="text" name="ems_country_access" id="input-ems-country-access"
                                    value="<?php echo $ems_country_access; ?>" size="50" class="form-control"
-                                   placeholder="<?php echo $info_help_country_access; ?>"/>
+                                   placeholder="<?php echo $info_example_country_access; ?>"/>
                         </div>
                     </div>
                     <?php endif ?>

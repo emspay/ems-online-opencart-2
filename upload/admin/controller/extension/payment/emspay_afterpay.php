@@ -18,6 +18,9 @@ class ControllerExtensionPaymentEmspayAfterPay extends Controller
     {
         $this->load->model('extension/event');
 
+        $this->load->model('setting/setting');
+        $this->model_setting_setting->editSetting('emspay_afterpay', ['emspay_afterpay_country_access' => 'NL, BE']);
+
         $this->model_extension_event->addEvent(
             'emspay_afterpay_edit_order',
             'catalog/controller/api/order/edit/after',
