@@ -661,9 +661,11 @@ class EmsHelper
      * @param $countryList
      * @return bool
      */
-    public static function CountryValidator($countryList, $billingAddress)
+    public static function countryValidator($countryList, $billingAddress)
     {
-        if ($countryList !== '' ) {
+        if (empty($countryList)) {
+            return true;
+        } else {
             $arrayCountryList = array_map('trim', explode(',', $countryList));
 
             if (in_array($billingAddress, $arrayCountryList)) {

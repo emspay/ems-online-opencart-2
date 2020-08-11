@@ -54,5 +54,5 @@ $_['info_help_afterpay_ip_filter'] = 'U kunt specifieke IP adressen opgeven waar
 $_['entry_afterpay_ip_filter'] = 'IP-Filteren:';
 $_['entry_afterpay_test_api_key'] = 'Test API Key:';
 $_['info_help_afterpay_test_api_key'] = 'Vul hier de API Key in van uw test webshop.';
-$_['info_help_country_access'] = 'Om AfterPay voor elk ander land te kunnen gebruiken, voegt u de landcode (in ISO 2-norm) toe aan het veld &#34;Beschikbare landen voor AfterPay&#34;. Voorbeeld: BE, NL, FR';
+$_['info_help_country_access'] = 'Om AfterPay voor elk ander land te kunnen gebruiken, voegt u de landcode (in ISO 2-norm) toe aan het veld &#34;Beschikbare landen voor AfterPay&#34;.<br> Voorbeeld: BE, NL, FR <br> Als het veld leeg is, is AfterPay beschikbaar voor alle landen.';
 $_['info_example_country_access'] = 'BE, NL, FR';

@@ -23,13 +23,10 @@ class ModelExtensionPaymentEmspayAfterpay extends Model
         } else {
             $status = false;
         }
-
-        if (!EmsHelper::CountryValidator($this->config->get('emspay_afterpay_country_access'),
+        if (!EmsHelper::countryValidator($this->config->get('emspay_afterpay_country_access'),
             $this->session->data['payment_address']['iso_code_2'])) {
-
             $status = false;
         }
-
         if (!EmsHelper::ipIsEnabled($this->config->get('emspay_afterpay_afterpay_ip_filter'))) {
             $status = false;
         }

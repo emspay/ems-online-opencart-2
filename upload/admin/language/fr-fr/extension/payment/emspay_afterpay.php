@@ -54,5 +54,5 @@ $_['info_help_afterpay_ip_filter'] = 'Si cette champs est rempli, uniquement pou
 $_['entry_afterpay_ip_filter'] = 'le filtrage IP:';
 $_['entry_afterpay_test_api_key'] = 'clé API de Test:';
 $_['info_help_afterpay_test_api_key'] = 'Si entré, cette clé API sera utilisée uniquement à des test.';
-$_['info_help_country_access'] = 'Pour autoriser AfterPay à être utilisé pour tout autre pays, ajoutez simplement son code de pays (dans la norme ISO 2) au champ &#34;Pays disponibles pour AfterPay&#34;. Exemple: BE, NL, FR';
+$_['info_help_country_access'] = 'Pour autoriser AfterPay à être utilisé pour tout autre pays, ajoutez simplement son code de pays (dans la norme ISO 2) au champ &#34;Pays disponibles pour AfterPay&#34;. <br> Exemple: BE, NL, FR <br> Si le champ est vide, AfterPay sera disponible pour tous les pays.';
 $_['info_example_country_access'] = 'BE, NL, FR';

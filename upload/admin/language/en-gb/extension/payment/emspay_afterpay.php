@@ -54,5 +54,5 @@ $_['info_help_afterpay_ip_filter'] = 'If entered, only for those IPs payment met
 $_['entry_afterpay_ip_filter'] = 'IP Filtering:';
 $_['entry_afterpay_test_api_key'] = 'Test API Key:';
 $_['info_help_afterpay_test_api_key'] = 'If entered this API key will be used for testing purposes.';
-$_['info_help_country_access'] = "To allow AfterPay to be used for any other country just add its country code (in ISO 2 standard) to the &#34;Countries available for AfterPay&#34; field. Example: BE, NL, FR";
+$_['info_help_country_access'] = "To allow AfterPay to be used for any other country just add its country code (in ISO 2 standard) to the &#34;Countries available for AfterPay&#34; field. <br> Example: BE, NL, FR <br> If field is empty then AfterPay will be available for all countries.";
 $_['info_example_country_access'] = 'BE, NL, FR';
