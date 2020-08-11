@@ -667,10 +667,7 @@ class EmsHelper
             return true;
         } else {
             $arrayCountryList = array_map('trim', explode(',', $countryList));
-
-            if (in_array($billingAddress, $arrayCountryList)) {
-                return true;
-            }
+            return in_array($billingAddress, $arrayCountryList);
         }
         return false;
     }
