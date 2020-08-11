@@ -669,7 +669,6 @@ class EmsHelper
             $arrayCountryList = array_map('trim', explode(',', $countryList));
             return in_array($billingAddress, $arrayCountryList);
         }
-        return false;
     }
 
     /**
