@@ -82,7 +82,6 @@ class ControllerExtensionPaymentEmspayKlarnaPayLater extends Controller
         $this->language->load('extension/payment/'.static::MODULE_NAME);
 
         $data['button_confirm'] = $this->language->get('button_confirm');
-        $data['text_select_bank'] = $this->language->get('text_select_bank');
         $data['action'] = $this->url->link('extension/payment/'.static::MODULE_NAME.'/confirm');
 
         return $this->load->view('extension/payment/'.static::MODULE_NAME, $data);
