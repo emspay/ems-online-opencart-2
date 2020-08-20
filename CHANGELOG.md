@@ -29,3 +29,7 @@
 ** 1.5.0 **
 
 * Fixed payment URL for Klarna Pay Later
+
+** 1.5.1 **
+
+* Klarna-Pay-Later: Remove fields gender and birthday from checkout form and customer object
