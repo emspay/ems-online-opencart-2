@@ -8,7 +8,7 @@ class EmsHelper
     /**
      * EMS Online OpenCart plugin version
      */
-    const PLUGIN_VERSION = '1.5.0';
+    const PLUGIN_VERSION = '1.5.1';
 
     /**
      * Default currency for Order
@@ -212,26 +212,19 @@ class EmsHelper
     /**
      * @param array $orderInfo
      * @param object $currency
+     * @param null $full_anount
      * @return int
      */
-    public function getAmountInCents($orderInfo, $currency)
+    public function getAmountInCents($orderInfo, $currency, $full_anount = null)
     {
+        $total = is_null($full_anount) ? $orderInfo['total'] : $full_anount;
         $amount = $currency->format(
-            $orderInfo['total'],
+            $total,
             $orderInfo['currency_code'],
             $orderInfo['currency_value'],
             false
         );
 
-        return (int) round($amount * 100);
-    }
-
-    /**
-     * @param $amount
-     * @return int|null
-     */
-    public static function formatAmountToCents($amount)
-    {
         return (int) round($amount * 100);
     }
 
@@ -545,7 +538,7 @@ class EmsHelper
         $orderLines = [];
 
         foreach ($paymentMethod->cart->getProducts() as $item) {
-            $amount = static::formatAmountToCents(
+            $amount = $this->getAmountInCents($orderInfo,$paymentMethod->currency,
                     $paymentMethod->tax->calculate(
                         $item['price'],
                         $item['tax_class_id'],
@@ -572,7 +565,7 @@ class EmsHelper
         if (array_key_exists('shipping_method', $paymentMethod->session->data)
             && intval($paymentMethod->session->data['shipping_method']['cost']) > 0
         ) {
-            $shipping_costs = $this->getShippingOrderLine($paymentMethod);
+            $shipping_costs = $this->getShippingOrderLine($orderInfo, $paymentMethod);
             $orderLines[] = $shipping_costs;
             $total_amount += $shipping_costs['amount'];
         }
@@ -595,14 +588,14 @@ class EmsHelper
      * @param $paymentMethod
      * @return array
      */
-    public function getShippingOrderLine($paymentMethod)
+    public function getShippingOrderLine($orderInfo, $paymentMethod)
     {
         $shippingMethod = $paymentMethod->session->data['shipping_method'];
 
         return [
             'name' => $shippingMethod['title'],
             'type' => 'shipping_fee',
-            'amount' => static::formatAmountToCents(
+            'amount' => $this->getAmountInCents($orderInfo, $paymentMethod->currency,
                 $paymentMethod->tax->calculate(
                     $shippingMethod['cost'],
                     $shippingMethod['tax_class_id'],
@@ -637,7 +630,7 @@ class EmsHelper
             }
         }
 
-        return static::formatAmountToCents($taxRate);
+        return (int) round($taxRate * 100);
     }
 
     /**
