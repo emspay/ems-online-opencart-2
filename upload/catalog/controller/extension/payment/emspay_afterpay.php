@@ -36,11 +36,6 @@ class ControllerExtensionPaymentEmspayAfterPay extends Controller
      * @var EmsHelper
      */
     public $emsHelper;
-    
-    /**
-     * @var array
-     */
-    protected static $allowedLocales = ['NL', 'BE'];
 
     /**
      * @param $registry
@@ -113,7 +108,6 @@ class ControllerExtensionPaymentEmspayAfterPay extends Controller
         $data['text_please_select_gender_male'] = $this->language->get('text_please_select_gender_male');
         $data['text_please_select_gender_female'] = $this->language->get('text_please_select_gender_female');
         $data['terms_conditions_url'] = $this->getTermsAndConditionUrlByCountryIsoLocale($this->session->data['payment_address']['iso_code_2']);
-        $data['is_ap_allowed'] = $this->isPaymentAllowed($this->session->data['payment_address']['iso_code_2']);
         return $this->load->view('extension/payment/'.static::MODULE_NAME, $data);
     }
 
@@ -247,16 +241,5 @@ class ControllerExtensionPaymentEmspayAfterPay extends Controller
             return self::TERMS_CONDITION_URL_BE;
         }
         return self::TERMS_CONDITION_URL_NL;
-    }
-    
-    /**
-     * check is payment allowed for the locale
-     *
-     * @param type $iso2code
-     * @return bool
-     */
-    protected function isPaymentAllowed($iso2code)
-    {
-        return in_array(strtoupper($iso2code), self::$allowedLocales);
     }
 }
