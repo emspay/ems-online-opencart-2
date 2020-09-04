@@ -6,7 +6,7 @@ This is the offical EMS Online plugin.
 By integrating your webshop with EMS Online you can accept payments from your customers in an easy and trusted manner with all relevant payment methods supported.
 
 ## Version number
-Version 1.5.0
+Version 1.5.1
 
 ## Pre-requisites to install the plug-ins: 
 - PHP v5.4 and above
@@ -32,6 +32,8 @@ Order Expired	Expired
 Order Cancelled	Canceled
 Order Error	Failed
 Order Captured	Shipped
+
+Only for AfterPay payment: To allow AfterPay to be used for any other country just add its country code (in ISO 2 standard) to the "Countries available for AfterPay" field. Example: BE, NL, FR
 
 - Change field 'Status' to 'Enabled'.
 - Enable the CA bundle
