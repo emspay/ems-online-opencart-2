@@ -20,11 +20,9 @@
     </div>
 
     <div class="form-group pull-right col-sm-12">
-        <?php if ($is_ap_allowed) { ?>
         <div class="right col-sm-3 pull-right">
             <input type="submit" id="afterpay-button-payment" value="<?php echo $button_confirm; ?>" class="button btn btn-primary pull-right"/>
         </div>
-        <?php } ?>
     </div>
 </form> 
 <script type="text/javascript"><!--

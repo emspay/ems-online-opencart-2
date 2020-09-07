@@ -42,7 +42,7 @@ class EmsHelper
      */
     public function __construct($paymentMethod)
     {
-        require_once(DIR_SYSTEM.'library/emspay/ginger-php/vendor/autoload.php');
+        require_once(DIR_SYSTEM.'library/vendor/autoload.php');
         $this->paymentMethod = $paymentMethod;
     }
 
@@ -50,7 +50,7 @@ class EmsHelper
      *  func get Cacert.pem path
      */
     public static function getCaCertPath(){
-        return dirname(__FILE__).'/emspay/ginger-php/assets/cacert.pem';
+        return dirname(__FILE__).'/assets/cacert.pem';
     }
 
     /**
@@ -648,6 +648,20 @@ class EmsHelper
         }
 
         return true;
+    }
+
+    /**
+     * @param $countryList
+     * @return bool
+     */
+    public static function countryValidator($countryList, $billingAddress)
+    {
+        if (empty($countryList)) {
+            return true;
+        } else {
+            $arrayCountryList = array_map('trim', explode(',', $countryList));
+            return in_array($billingAddress, $arrayCountryList);
+        }
     }
 
     /**
