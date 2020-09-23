@@ -173,7 +173,7 @@ class EmsHelper
                 $orderInfo['shipping_address_2'],
                 $orderInfo['shipping_postcode']." ".$orderInfo['shipping_city']
             ))),
-            'locale' => self::formatLocale($orderInfo['language_code']),
+            'locale' => $this->formatLocale($orderInfo['language_code']),
             'ip_address' => filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP),
             'gender' => $gender,
             'birthdate' => $dob,
@@ -667,7 +667,7 @@ class EmsHelper
      */
     public static function getPluginVersion()
     {
-        return sprintf('OpenCart v%s', self::PLUGIN_VERSION);
+        return sprintf('OpenCart v%s', static::PLUGIN_VERSION);
     }
 
     /**
