@@ -36,3 +36,5 @@
 * Added the AfterPay localization for Netherlands, German and French language.
 * Klarna Pay Later : Remove fields gender and birthday from checkout form and customer object.
 * Removed old ginger-PHP library environment and transport to composer autoload.
+* Added order lines for Klarna Pay Later payment method
+* Added order lines for AfterPay payment method
