@@ -30,7 +30,6 @@ class EmsHelper
      * EMS Online Order statuses
      */
     const EMS_STATUS_EXPIRED = 'expired';
-    const EMS_STATUS_NEW = 'new';
     const EMS_STATUS_PROCESSING = 'processing';
     const EMS_STATUS_COMPLETED = 'completed';
     const EMS_STATUS_CANCELLED = 'cancelled';
@@ -102,46 +101,42 @@ class EmsHelper
      */
     protected function getGignerClinet($apiKey, $useBundle = false)
     {
-        $ems = \Ginger\Ginger::createClient(
-            EmsHelper::GINGER_ENDPOINT,
+        return \Ginger\Ginger::createClient(
+            self::GINGER_ENDPOINT,
             $apiKey,
             $useBundle ?
                 [
-                    CURLOPT_CAINFO => EmsHelper::getCaCertPath()
+                    CURLOPT_CAINFO => self::getCaCertPath()
                 ] : []
         );
-
-        return $ems;
     }
 
     /**
      * Method maps EMS Online order status to OpenCart specific
      *
      * @param string $emsOrderStatus
+     * @param $config
      * @return string
      */
     public function getOrderStatus($emsOrderStatus, $config)
     {
         switch ($emsOrderStatus) {
-            case EmsHelper::EMS_STATUS_NEW:
-                $orderStatus = $config->get($this->getPaymentSettingsFieldName('order_status_id_new'));
-                break;
-            case EmsHelper::EMS_STATUS_EXPIRED:
+            case static::EMS_STATUS_EXPIRED:
                 $orderStatus = $config->get($this->getPaymentSettingsFieldName('order_status_id_expired'));
                 break;
-            case EmsHelper::EMS_STATUS_PROCESSING:
+            case static::EMS_STATUS_PROCESSING:
                 $orderStatus = $config->get($this->getPaymentSettingsFieldName('order_status_id_processing'));
                 break;
-            case EmsHelper::EMS_STATUS_COMPLETED:
+            case static::EMS_STATUS_COMPLETED:
                 $orderStatus = $config->get($this->getPaymentSettingsFieldName('order_status_id_completed'));
                 break;
-            case EmsHelper::EMS_STATUS_CANCELLED:
+            case static::EMS_STATUS_CANCELLED:
                 $orderStatus = $config->get($this->getPaymentSettingsFieldName('order_status_id_cancelled'));
                 break;
-            case EmsHelper::EMS_STATUS_ERROR:
+            case static::EMS_STATUS_ERROR:
                 $orderStatus = $config->get($this->getPaymentSettingsFieldName('order_status_id_error'));
                 break;
-            case EmsHelper::EMS_STATUS_CAPTURED:
+            case static::EMS_STATUS_CAPTURED:
                 $orderStatus = $config->get($this->getPaymentSettingsFieldName('order_status_id_captured'));
                 break;
             default:
@@ -154,6 +149,7 @@ class EmsHelper
 
     /**
      * @param array $orderInfo
+     * @param $paymentMethod
      * @return array
      */
     public function getCustomerInformation(array $orderInfo, $paymentMethod)
@@ -164,7 +160,7 @@ class EmsHelper
         $dob = array_key_exists('dob', $paymentMethod->request->post)
             ? date("Y-m-d", strtotime($paymentMethod->request->post['dob'])) : null;
 
-        $customer = array_filter([
+        return array_filter([
             'address_type' => 'customer',
             'country' => $orderInfo['payment_iso_code_2'],
             'email_address' => $orderInfo['email'],
@@ -177,7 +173,7 @@ class EmsHelper
                 $orderInfo['shipping_address_2'],
                 $orderInfo['shipping_postcode']." ".$orderInfo['shipping_city']
             ))),
-            'locale' => self::formatLocale($orderInfo['language_code']),
+            'locale' => $this->formatLocale($orderInfo['language_code']),
             'ip_address' => filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP),
             'gender' => $gender,
             'birthdate' => $dob,
@@ -193,13 +189,11 @@ class EmsHelper
                 ],
             ]
         ]);
-
-        return $customer;
     }
 
     /**
-     * @param array $orderInfo
-     * @param object $language
+     * @param $orderId
+     * @param $paymentMethod
      * @return string
      */
     public function getOrderDescription($orderId, $paymentMethod)
@@ -212,26 +206,19 @@ class EmsHelper
     /**
      * @param array $orderInfo
      * @param object $currency
+     * @param null $full_anount
      * @return int
      */
-    public function getAmountInCents($orderInfo, $currency)
+    public function getAmountInCents($orderInfo, $currency, $full_anount = null)
     {
+        $total = is_null($full_anount) ? $orderInfo['total'] : $full_anount;
         $amount = $currency->format(
-            $orderInfo['total'],
+            $total,
             $orderInfo['currency_code'],
             $orderInfo['currency_value'],
             false
         );
 
-        return (int) round($amount * 100);
-    }
-
-    /**
-     * @param $amount
-     * @return int|null
-     */
-    public static function formatAmountToCents($amount)
-    {
         return (int) round($amount * 100);
     }
 
@@ -306,7 +293,7 @@ class EmsHelper
             if ($orderInfo) {
                 $paymentMethod->model_checkout_order->addOrderHistory(
                     $emsOrder['merchant_order_id'],
-                    $paymentMethod->emsHelper->getOrderStatus($emsOrder['status'], $paymentMethod->config),
+                    $this->getOrderStatus($emsOrder['status'], $paymentMethod->config),
                     'Status changed for order: '.$emsOrder['id'],
                     true
                 );
@@ -426,14 +413,14 @@ class EmsHelper
         if ($orderInfo) {
             $paymentMethod->model_checkout_order->addOrderHistory(
                 $emsOrder['merchant_order_id'],
-                $paymentMethod->emsHelper->getOrderStatus($emsOrder['status'], $paymentMethod->config),
+                $this->getOrderStatus($emsOrder['status'], $paymentMethod->config),
                 'EMS Online order: '.$emsOrder['id'],
                 true
             );
             if ($emsOrder['status'] == 'completed') {
                 $paymentMethod->response->redirect($this->getSucceedUrl($paymentMethod, $orderInfo['order_id']));
             } elseif ($emsOrder['status'] == 'processing' || $emsOrder['status'] == 'new') {
-                $paymentMethod->response->redirect($paymentMethod->emsHelper->getProcessingUrl($paymentMethod));
+                $paymentMethod->response->redirect($this->getProcessingUrl($paymentMethod));
             } else {
                 $paymentMethod->response->redirect($this->getFailureUrl($paymentMethod, $orderInfo['order_id']));
             }
@@ -535,7 +522,9 @@ class EmsHelper
     }
 
     /**
+     * @param $orderInfo
      * @param $paymentMethod
+     * @param $totalAmountInCents
      * @return array
      */
     public function getOrderLines($orderInfo, $paymentMethod, $totalAmountInCents)
@@ -545,7 +534,7 @@ class EmsHelper
         $orderLines = [];
 
         foreach ($paymentMethod->cart->getProducts() as $item) {
-            $amount = static::formatAmountToCents(
+            $amount = $this->getAmountInCents($orderInfo,$paymentMethod->currency,
                     $paymentMethod->tax->calculate(
                         $item['price'],
                         $item['tax_class_id'],
@@ -572,7 +561,7 @@ class EmsHelper
         if (array_key_exists('shipping_method', $paymentMethod->session->data)
             && intval($paymentMethod->session->data['shipping_method']['cost']) > 0
         ) {
-            $shipping_costs = $this->getShippingOrderLine($paymentMethod);
+            $shipping_costs = $this->getShippingOrderLine($orderInfo, $paymentMethod);
             $orderLines[] = $shipping_costs;
             $total_amount += $shipping_costs['amount'];
         }
@@ -592,17 +581,18 @@ class EmsHelper
     }
 
     /**
+     * @param $orderInfo
      * @param $paymentMethod
      * @return array
      */
-    public function getShippingOrderLine($paymentMethod)
+    public function getShippingOrderLine($orderInfo, $paymentMethod)
     {
         $shippingMethod = $paymentMethod->session->data['shipping_method'];
 
         return [
             'name' => $shippingMethod['title'],
             'type' => 'shipping_fee',
-            'amount' => static::formatAmountToCents(
+            'amount' => $this->getAmountInCents($orderInfo, $paymentMethod->currency,
                 $paymentMethod->tax->calculate(
                     $shippingMethod['cost'],
                     $shippingMethod['tax_class_id'],
@@ -637,7 +627,7 @@ class EmsHelper
             }
         }
 
-        return static::formatAmountToCents($taxRate);
+        return (int) round($taxRate * 100);
     }
 
     /**
@@ -659,6 +649,7 @@ class EmsHelper
 
     /**
      * @param $countryList
+     * @param $billingAddress
      * @return bool
      */
     public static function countryValidator($countryList, $billingAddress)
@@ -676,7 +667,7 @@ class EmsHelper
      */
     public static function getPluginVersion()
     {
-        return sprintf('OpenCart v%s', self::PLUGIN_VERSION);
+        return sprintf('OpenCart v%s', static::PLUGIN_VERSION);
     }
 
     /**
@@ -693,5 +684,6 @@ class EmsHelper
                 return $orderKey[0];
             }
         }
+        return false;
     }
 }
