@@ -30,7 +30,7 @@
 
 * Fixed payment URL for Klarna Pay Later
 
-** 1.5.1 **
+** 1.6.0 **
 
 * Added the ability for AfterPay to be available in the selected countries.
 * Added the AfterPay localization for Netherlands, German and French language.
