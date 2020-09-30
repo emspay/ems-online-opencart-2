@@ -30,7 +30,8 @@ class ControllerExtensionPaymentEmspayIdeal extends Controller
         'klarna_ip_filter',
         'klarna_test_api_key',
         'afterpay_ip_filter',
-        'afterpay_test_api_key'
+        'afterpay_test_api_key',
+        'country_access'
     ];
 
     /**
@@ -117,7 +118,9 @@ class ControllerExtensionPaymentEmspayIdeal extends Controller
             'info_help_klarna_test_api_key' => $this->language->get('info_help_klarna_test_api_key'),
             'info_help_afterpay_ip_filter' => $this->language->get('info_help_afterpay_ip_filter'),
             'info_help_afterpay_test_api_key' => $this->language->get('info_help_afterpay_test_api_key'),
+            'info_help_country_access' => $this->language->get('info_help_country_access'),
             'info_help_total' => $this->language->get('info_help_total'),
+            'info_example_country_access' => $this->language->get('info_example_country_access'),
             'entry_ems_api_key' => $this->language->get('entry_ems_api_key'),
             'entry_order_completed' => $this->language->get('entry_order_completed'),
             'entry_order_new' => $this->language->get('entry_order_new'),
@@ -129,6 +132,7 @@ class ControllerExtensionPaymentEmspayIdeal extends Controller
             'entry_sort_order' => $this->language->get('entry_sort_order'),
             'entry_status' => $this->language->get('entry_status'),
             'entry_ems_total' => $this->language->get('entry_ems_total'),
+            'entry_country_access' => $this->language->get('entry_country_access'),
             'entry_cacert' =>  $this->language->get('entry_cacert'),
             'entry_send_webhook' =>  $this->language->get('entry_send_webhook'),
             'entry_klarna_ip_filter' => $this->language->get('entry_klarna_ip_filter'),
