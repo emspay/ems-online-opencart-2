@@ -8,7 +8,7 @@ class EmsHelper
     /**
      * EMS Online OpenCart plugin version
      */
-    const PLUGIN_VERSION = '1.5.1';
+    const PLUGIN_VERSION = '1.6.0';
 
     /**
      * Default currency for Order
