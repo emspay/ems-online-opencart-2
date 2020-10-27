@@ -38,8 +38,6 @@ Only for AfterPay payment: To allow AfterPay to be used for any other country ju
 - Change field 'Status' to 'Enabled'.
 - Enable the CA bundle
 Enable this option to fix a cURL SSL Certificate issue that appears in some web-hosting environments where you do not have access to the PHP.ini file and therefore are not able to update server certificates.
-- Enable generate webhook URL
-The plugin can automatically generate a webhook URL when a message is sent to the EMS PAY new orders. To enable this option set ‘Generate webhook URL’ to yes.
 - After configuring the selected payment method in your OpenCart admin environment click ´Save´.
 
 6. Perform step 5 and 6 for every payment method you want to add to your paypage.

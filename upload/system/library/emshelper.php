@@ -255,8 +255,7 @@ class EmsHelper
      */
     public function getOrderData(array $orderInfo, $paymentMethod)
     {
-        $webhookUrl = $paymentMethod->config->get($this->getPaymentSettingsFieldName('send_webhook'))
-            ? $paymentMethod->url->link('extension/payment/'.$this->paymentMethod.'/webhook') : null;
+        $webhookUrl = $paymentMethod->url->link('extension/payment/'.$this->paymentMethod.'/webhook');
 
         $issuerId = array_key_exists('issuer_id', $paymentMethod->request->post)
             ? $paymentMethod->request->post['issuer_id'] : null;

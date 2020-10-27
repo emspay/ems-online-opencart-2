@@ -21,7 +21,6 @@ $_['entry_sort_order'] = 'Order de tri:';
 $_['entry_ems_api_key'] = 'EMS Online clé API:';
 $_['entry_ems_total'] = 'Total:';
 $_['entry_cacert'] = 'Bundle cURL ca.cert:';
-$_['entry_send_webhook'] = 'Générer URL Webhook:';
 $_['entry_order_captured'] = 'Commande capturé:';
 
 /**
