@@ -22,7 +22,6 @@ $_['entry_ems_api_key'] = 'EMS Online API Key:';
 $_['entry_ems_total'] = 'Minimum bestelbedrag:';
 $_['entry_country_access'] = 'Landen beschikbaar voor AfterPay';
 $_['entry_cacert'] = 'Bundle cURL ca.cert:';
-$_['entry_send_webhook'] = 'Genereer webhook URL:';
 $_['entry_order_captured'] = 'Bestelling gevangen:';
 
 /**

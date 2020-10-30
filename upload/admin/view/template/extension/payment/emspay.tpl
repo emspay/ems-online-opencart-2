@@ -308,22 +308,6 @@
                             </label>
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label"><?php echo $entry_send_webhook; ?></label>
-                        <div class="col-sm-10">
-                            <label class="radio-inline">
-                                <input type="radio" name="ems_send_webhook" value="1"
-                                <?php if (is_null($ems_send_webhook) or $ems_send_webhook) { ?> checked="checked" <?php } ?> />
-                                <?php echo $text_yes; ?>
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="ems_send_webhook" value="0"
-                                <?php if (!is_null($ems_send_webhook) and !$ems_send_webhook) { ?> checked="checked" <?php } ?> />
-                                <?php echo $text_no; ?>
-                            </label>
-                        </div>
-                    </div>
                 </form>
             </div>
         </div>
