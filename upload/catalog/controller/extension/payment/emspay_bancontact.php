@@ -116,7 +116,7 @@ class ControllerExtensionPaymentEmspayBancontact extends Controller
      */
     protected function createOrder(array $orderData)
     {
-        return $this->ems->createOrder([
+        return $this->ems->createOrder(array_filter([
             'amount' => $orderData['amount'],                                // Amount in cents
             'currency' => (string) $orderData['currency'],                   // Currency
             'description' => $orderData['description'],                      // Description
@@ -130,7 +130,7 @@ class ControllerExtensionPaymentEmspayBancontact extends Controller
                     'payment_method' => "bancontact"
                 ]
             ]
-        ]);
+        ]));
     }
 
     /**

@@ -116,7 +116,7 @@ class ControllerExtensionPaymentEmspayPayconiq extends Controller
      */
     protected function createOrder(array $orderData)
     {
-        return $this->ems->createOrder([
+        return $this->ems->createOrder(array_filter([
             'amount' => $orderData['amount'],                                // Amount in cents
             'currency' => $orderData['currency'],                            // Currency
             'description' => $orderData['description'],                      // Description
@@ -130,7 +130,7 @@ class ControllerExtensionPaymentEmspayPayconiq extends Controller
                     'payment_method' => "payconiq"
                 ]
             ]
-        ]);
+        ]));
     }
 
     /**

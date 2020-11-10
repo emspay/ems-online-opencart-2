@@ -39,3 +39,7 @@
 * Added order lines for Klarna Pay Later payment method
 * Added order lines for AfterPay payment method
 
+** 1.6.1 **
+
+* Removed WebHook option in all payments
+* Update plugin descriptions
