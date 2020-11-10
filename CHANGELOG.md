@@ -42,5 +42,4 @@
 ** 1.6.1 **
 
 * Removed WebHook option in all payments
-* Added filtering to createOrder
 * Update plugin descriptions
