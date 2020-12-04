@@ -67,19 +67,19 @@
                         <div class="col-sm-10">
                             <input type="text" name="ems_klarnapaylater_test_api_key" id="input-ems-klarnapaylater-test-api-key"
                                    value="<?php if (isset($ems_klarnapaylater_test_api_key)) echo $ems_klarnapaylater_test_api_key; ?>" size="50" class="form-control"
-                                   placeholder="<?php if (isset($ems_klarnapaylater_test_api_key)) echo $ems_klarnapaylater_test_api_key; ?>"/>
+                                   placeholder="<?php echo $info_help_klarnapaylater_test_api_key; ?>"/>
                         </div>
                     </div>
                      <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-klarnapaylater-ip-filter">
-                            <span data-toggle="tooltip" title="<?php if (isset($info_help_klarnapaylater_ip_filter)) echo $info_help_klarnapaylater_ip_filter; ?>">
+                            <span data-toggle="tooltip" title="<?php echo $info_help_klarnapaylater_ip_filter; ?>">
                                 <?php echo "Test IP Filter"; ?>
                             </span>
                         </label>
                         <div class="col-sm-10">
                             <input type="text" name="ems_klarnapaylater_ip_filter"
                                    value="<?php if (isset($ems_klarnapaylater_ip_filter)) echo $ems_klarnapaylater_ip_filter; ?>"
-                                   placeholder="<?php if (isset($ems_klarnapaylater_ip_filter)) echo $ems_klarnapaylater_ip_filter; ?>"
+                                   placeholder="<?php echo $info_help_klarnapaylater_ip_filter; ?>"
                                    id="input-klarnapaylater-ip-filter" class="form-control" />
                         </div>
                     </div>
@@ -94,7 +94,7 @@
                         </label>
                         <div class="col-sm-10">
                             <input type="text" name="ems_afterpay_test_api_key" id="input-ems-afterpay-test-api-key"
-                                   value="<?php echo $ems_afterpay_test_api_key; ?>" size="50" class="form-control"
+                                   value="<?php if (isset($ems_afterpay_test_api_key)) echo $ems_afterpay_test_api_key; ?>" size="50" class="form-control"
                                    placeholder="<?php echo $info_help_afterpay_test_api_key; ?>"/>
                         </div>
                     </div>
@@ -106,8 +106,8 @@
                         </label>
                         <div class="col-sm-10">
                             <input type="text" name="ems_afterpay_ip_filter"
-                                   value="<?php echo $ems_afterpay_ip_filter; ?>"
-                                   placeholder="<?php echo $ems_afterpay_ip_filter; ?>"
+                                   value="<?php if (isset($ems_afterpay_ip_filter)) echo $ems_afterpay_ip_filter; ?>"
+                                   placeholder="<?php echo $info_help_afterpay_ip_filter; ?>"
                                    id="input-afterpay-ip-filter" class="form-control" />
                         </div>
                     </div>

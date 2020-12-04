@@ -48,7 +48,3 @@ $_['error_missing_api_key'] = 'EMS Online API Key is required!';
 $_['info_help_api_key'] = 'Get your EMS Online API key from Payments merchant portal.';
 $_['info_help_total'] = 'The payment method will only be presented if the total checkout amount of an order is higher than this threshold.';
 $_['info_plugin_not_configured'] = 'EMS Online: American Express plugin is not configured.';
-$_['info_help_amex_ip_filter'] = 'If entered, only for those IPs payment method will be displayed. (Example: 128.0.0.1, 255.255.255.255)';
-$_['entry_amex_ip_filter'] = 'IP Filtering:';
-$_['entry_amex_test_api_key'] = 'Test API Key:';
-$_['info_help_amex_test_api_key'] = 'If entered this API key will be used for testing purposes.';
