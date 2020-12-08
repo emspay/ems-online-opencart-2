@@ -40,7 +40,7 @@
                 <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-ems"
                       class="form-horizontal">
 
-                    <div class="form-group required">
+                    <div class="form-group  <?php if ($emspay_module != 'emspay_klarnapaylater' && $emspay_module != 'emspay_afterpay' ): echo 'required'; endif; ?>">
                         <label class="col-sm-2 control-label"
                                for="input-ems-api-key">
                             <span data-toggle="tooltip" title="<?php echo $info_help_api_key; ?>">
