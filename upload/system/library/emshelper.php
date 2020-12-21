@@ -8,7 +8,7 @@ class EmsHelper
     /**
      * EMS Online OpenCart plugin version
      */
-    const PLUGIN_VERSION = '1.6.1';
+    const PLUGIN_VERSION = '1.6.2';
 
     /**
      * Default currency for Order
@@ -84,7 +84,7 @@ class EmsHelper
     public function getClientForKlarnaPayLater($config)
     {
         return $this->getGignerClinet(
-                $config->get($this->getPaymentSettingsFieldName('klarnapaynow_test_api_key'))
+                $config->get($this->getPaymentSettingsFieldName('klarnapaylater_test_api_key'))
                 ?: $config->get($this->getPaymentSettingsFieldName('api_key')),
                 $config->get($this->getPaymentSettingsFieldName('bundle_cacert'))
                );

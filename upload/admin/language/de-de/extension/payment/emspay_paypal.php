@@ -48,7 +48,3 @@ $_['error_missing_api_key'] = 'EMS Online API schlüssel ist erforderlich!';
 $_['info_help_api_key'] = 'Duplizieren Sie Ihre EMS Online API Schlüssel von Merchant Portal.';
 $_['info_help_total'] = 'Die Zahlungsmethode wird gezeigt wenn die kasse insgesamt der Mindestbetrag erreicht.';
 $_['info_plugin_not_configured'] = 'EMS Online: Paypal plugin ist nicht konfiguriert.';
-$_['info_help_klarna_ip_filter'] = 'Wenn sie eingegeben werden, wird nur für diese IPs die Zahlungsmethode angezeigt. (Beispiel: 128.0.0.1, 255.255.255.255)';
-$_['entry_klarna_ip_filter'] = 'IP-Filterung:';
-$_['entry_klarna_test_api_key'] = 'Test API schlüssel:';
-$_['info_help_klarna_test_api_key'] = 'Wenn eingegeben, wird dieser API-Schlüssel nur zu Testzwecken verwendet werden.';
