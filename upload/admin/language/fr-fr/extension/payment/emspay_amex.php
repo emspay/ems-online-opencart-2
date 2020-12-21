@@ -48,7 +48,3 @@ $_['error_missing_api_key'] = 'EMS Online clé API est obligatoire!';
 $_['info_help_api_key'] = 'Obtenez votre EMS Online clé API du portail marchand.';
 $_['info_help_total'] = 'Le total de la caisse que la commande doit atteindre avant que ce mode de paiement devient actif.';
 $_['info_plugin_not_configured'] = 'EMS Online: Plugin American Express est pas configuré.';
-$_['info_help_klarna_ip_filter'] = 'Si cette champs est rempli, uniquement pour ces adresses IP le mode de paiement sera affiché. (Par Ex: 128.0.0.1, 255.255.255.255)';
-$_['entry_klarna_ip_filter'] = 'le filtrage IP:';
-$_['entry_klarna_test_api_key'] = 'clé API de Test:';
-$_['info_help_klarna_test_api_key'] = 'Si entré, cette clé API sera utilisée uniquement à des test.';
