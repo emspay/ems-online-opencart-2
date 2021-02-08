@@ -289,4 +289,33 @@ class ControllerExtensionPaymentEmspayIdeal extends Controller
     {
         return static::POST_FIELD_PREFIX.$postFieldName;
     }
+
+    public function install()
+    {
+        $this->load->model('extension/event');
+        $this->load->model('setting/setting');
+
+        $refundOrderEvent = $this->model_extension_event->getEvent(
+            'emspay_refund_order',
+            'admin/model/sale/return/addReturnHistory/after',
+            'extension/payment/emspay_ideal/refund_an_order'
+        );
+
+        if(empty($refundOrderEvent)){
+            $this->model_extension_event->addEvent(
+                'emspay_refund_order',
+                'admin/model/sale/return/addReturnHistory/after',
+                'extension/payment/emspay_ideal/refund_an_order'
+            );
+        }
+
+    }
+
+    /**
+     * Function refund_an_order - refund EMS order
+     */
+    public function refund_an_order(){
+        $emsHelper = new EmsHelper($this->emsModuleName);
+        $emsHelper->orderRefund($this);
+    }
 }
