@@ -293,7 +293,6 @@ class ControllerExtensionPaymentEmspayIdeal extends Controller
     public function install()
     {
         $this->load->model('extension/event');
-        $this->load->model('setting/setting');
 
         $refundOrderEvent = $this->model_extension_event->getEvent(
             'emspay_refund_order',
@@ -315,7 +314,69 @@ class ControllerExtensionPaymentEmspayIdeal extends Controller
      * Function refund_an_order - refund EMS order
      */
     public function refund_an_order(){
-        $emsHelper = new EmsHelper($this->emsModuleName);
-        $emsHelper->orderRefund($this);
+        $return_id = $this->request->get['return_id'];
+        $this->load->model('sale/return');
+        $this->load->model('localisation/return_reason');
+        $return_info = $this->model_sale_return->getReturn($return_id);
+        $return_reason = $this->model_localisation_return_reason->getReturnReason($return_info["return_reason_id"]);
+
+        if($this->request->post['return_status_id'] == 3 ) {
+            $orderId = $return_info['order_id'];
+            $product = $return_info['model'];
+
+            $this->load->model('sale/order');
+
+            $orderInfo = $this->model_sale_order->getOrder($orderId);
+            $orderProducts = $this->model_sale_order->getOrderProducts($orderId);
+
+            foreach ($orderProducts as $orderProduct) {
+                if ($orderProduct['model'] == $product) {
+                    $amount = (int)$orderProduct['total'] * 100;
+                }
+            }
+            $order_history = $this->model_sale_order->getOrderHistories($orderId, 1, 1);
+            $emsOrderId =  substr($order_history[0]['comment'], strpos($order_history[0]['comment'], ":") + 2);
+
+            $emsHelper = new EmsHelper($orderInfo['payment_code']);
+            $ems = $emsHelper->getClientForAfterPay($this->config);
+
+            if ($emsOrderId) {
+                $emsOrder = $ems->getOrder(
+                    $emsOrderId
+                );
+            }
+
+            if ($emsOrder['status'] != 'completed') {
+                throw new Exception('Only completed orders can be refunded');
+            }
+
+            $refund_data = [
+                'amount' => $amount,
+                'description' => 'OrderID: #' . $orderId . ', Reason: ' . $return_reason['name']
+            ];
+
+            if ($orderInfo['payment_code'] == 'emspay_klarna-pay-later' || $orderInfo['payment_code'] == 'emspay_afterpay') {
+                if (!isset($emsOrder['transactions']['flags']['has-captures'])) {
+                    throw new Exception('Refunds only possible when captured');
+                };
+                $orderInfo['total'] = $amount;
+                $refund_data['order_lines'] = $emsHelper->getOrderLines($orderInfo,
+                                                                        $orderInfo['payment_code'],
+                                                                        $emsHelper->getAmountInCents($orderInfo,
+                                                                                                     $this->currency));
+            }
+
+            $ems_refund_order = $ems->refundOrder(
+                $emsOrder['id'],
+                $refund_data
+            );
+
+            if (in_array($ems_refund_order['status'], ['error', 'cancelled', 'expired'])) {
+                if (isset(current($ems_refund_order['transactions'])['reason'])) {
+                    throw new Exception(current($ems_refund_order['transactions'])['reason']);
+                }
+                throw new Exception('Refund order is not completed');
+            }
+        }
     }
 }
