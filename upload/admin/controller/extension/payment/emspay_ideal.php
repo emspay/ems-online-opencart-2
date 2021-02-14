@@ -338,7 +338,7 @@ class ControllerExtensionPaymentEmspayIdeal extends Controller
             $emsOrderId =  substr($order_history[0]['comment'], strpos($order_history[0]['comment'], ":") + 2);
 
             $emsHelper = new EmsHelper($orderInfo['payment_code']);
-            $ems = $emsHelper->getClientForAfterPay($this->config);
+            $ems = $emsHelper->getClient($this->config);
 
             if ($emsOrderId) {
                 $emsOrder = $ems->getOrder(
