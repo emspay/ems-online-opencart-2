@@ -51,3 +51,11 @@ $_['info_help_klarnapaylater_ip_filter'] = 'Si cette champs est rempli, uniqueme
 $_['entry_klarnapaylater_ip_filter'] = 'le filtrage IP:';
 $_['entry_klarnapaylater_test_api_key'] = 'clé API de Test:';
 $_['info_help_klarnapaylater_test_api_key'] = 'Si entré, cette clé API sera utilisée uniquement à des test.';
+
+/**
+ * Refund text
+ */
+$_['empty_price'] = 'Le prix est vide dans les informations sur le produit de remboursement.';
+$_['wrong_order_status'] = 'Seules les commandes terminées peuvent être remboursées.';
+$_['order_not_captured'] = 'Les remboursements ne sont possibles qu\'une fois capturés.';
+$_['refund_not_completed'] = 'La commande de remboursement n\'est pas terminée.';

@@ -48,3 +48,10 @@ $_['error_missing_api_key'] = 'EMS Online clé API est obligatoire!';
 $_['info_help_api_key'] = 'Obtenez votre EMS Online clé API du portail marchand.';
 $_['info_help_total'] = 'Le total de la caisse que la commande doit atteindre avant que ce mode de paiement devient actif.';
 $_['info_plugin_not_configured'] = 'EMS Online: Plugin iDEAL est pas configuré.';
+
+/**
+ * Refund text
+ */
+$_['empty_price'] = 'Le prix est vide dans les informations sur le produit de remboursement.';
+$_['wrong_order_status'] = 'Seules les commandes terminées peuvent être remboursées.';
+$_['refund_not_completed'] = 'La commande de remboursement n\'est pas terminée.';
