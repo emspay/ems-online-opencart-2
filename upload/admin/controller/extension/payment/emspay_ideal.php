@@ -313,89 +313,80 @@ class ControllerExtensionPaymentEmspayIdeal extends Controller
     /**
      * Function refund_an_order - refund EMS order
      */
-    public function refund_an_order(){
-        $return_id = $this->request->get['return_id'];
-        $this->load->model('sale/return');
-        $this->load->model('localisation/return_reason');
-        $return_info = $this->model_sale_return->getReturn($return_id);
-        $return_reason = $this->model_localisation_return_reason->getReturnReason($return_info["return_reason_id"]);
-        if(empty($return_info)){
-            echo '<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i>Product return information is empty<button type="button" class="close" data-dismiss="alert">×</button>
-    </div>';
-            $this->log->write('Product return information is empty');exit();
-        }
-        if($this->request->post['return_status_id'] == 3 ) {
-            $orderId = $return_info['order_id'];
-            $product = $return_info['model'];
+    public function refund_an_order()
+    {
+        try {
+            $return_id = $this->request->get['return_id'];
+            $this->load->model('sale/return');
+            $this->load->model('localisation/return_reason');
+            $return_info = $this->model_sale_return->getReturn($return_id);
+            $return_reason = $this->model_localisation_return_reason->getReturnReason($return_info["return_reason_id"]);
 
-            $this->load->model('sale/order');
+            if (empty($return_info)) {
+                throw new Exception('Product return information is empty');
+            }
 
-            $orderInfo = $this->model_sale_order->getOrder($orderId);
-            $orderProducts = $this->model_sale_order->getOrderProducts($orderId);
+            if ($this->request->post['return_status_id'] == 3) {
+                $orderId = $return_info['order_id'];
+                $product = $return_info['model'];
 
-            $this->language->load('extension/payment/'.$orderInfo['payment_code']);
+                $this->load->model('sale/order');
 
-            foreach ($orderProducts as $orderProduct) {
-                if ($orderProduct['model'] == $product) {
-                    if(!(int)$orderProduct['total']){
-                        echo '<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i>'.$this->language->get('empty_price').'<button type="button" class="close" data-dismiss="alert">×</button>
-    </div>';
-                        $this->log->write($orderInfo['payment_code'].': '.$this->language->get('empty_price'));exit();
+                $orderInfo = $this->model_sale_order->getOrder($orderId);
+                $orderProducts = $this->model_sale_order->getOrderProducts($orderId);
+
+                $this->language->load('extension/payment/' . $orderInfo['payment_code']);
+
+                foreach ($orderProducts as $orderProduct) {
+                    if ($orderProduct['model'] == $product) {
+                        if (!(int) $orderProduct['total']) {
+                            throw new Exception($orderInfo['payment_method'] . ': ' . $this->language->get('empty_price'));
+                        }
+                        $amount = (int) $orderProduct['total'] * 100;
                     }
-                    $amount = (int)$orderProduct['total'] * 100;
+                }
+
+                $order_history = $this->model_sale_order->getOrderHistories($orderId, 1, 1);
+                $emsOrderId = substr($order_history[0]['comment'], strpos($order_history[0]['comment'], ":") + 2);
+                $emsHelper = new EmsHelper($orderInfo['payment_code']);
+                $ems = $emsHelper->getClient($this->config);
+
+                if ($emsOrderId) {
+                    $emsOrder = $ems->getOrder($emsOrderId);
+                }
+
+                if ($emsOrder['status'] != 'completed') {
+                    throw new Exception($orderInfo['payment_method'] . ': ' . $this->language->get('wrong_order_status'));
+                }
+
+                $refund_data = [
+                    'amount' => $amount,
+                    'description' => 'OrderID: #' . $orderId . ', Reason: ' . $return_reason['name']
+                ];
+
+                if ($orderInfo['payment_code'] == 'emspay_klarna-pay-later' || $orderInfo['payment_code'] == 'emspay_afterpay') {
+                    if (!isset($emsOrder['transactions']['flags']['has-captures'])) {
+                        throw new Exception($orderInfo['payment_method'] . ': ' . $this->language->get('order_not_captured'));
+                    };
+                    $orderInfo['total'] = $amount;
+                    $refund_data['order_lines'] = $emsHelper->getOrderLines($orderInfo,
+                                                                            $orderInfo['payment_code'],
+                                                                            $emsHelper->getAmountInCents($orderInfo,
+                                                                                                         $this->currency));
+                }
+                $ems_refund_order = $ems->refundOrder($emsOrder['id'],$refund_data);
+
+                if (in_array($ems_refund_order['status'], ['error', 'cancelled', 'expired'])) {
+                    if (isset(current($ems_refund_order['transactions'])['reason'])) {
+                        throw new Exception($orderInfo['payment_method'] . ': ' . current($ems_refund_order['transactions'])['reason']);
+                    }
+                    throw new Exception($orderInfo['payment_method'] . ': ' . $this->language->get('refund_not_completed'));
                 }
             }
-
-            $order_history = $this->model_sale_order->getOrderHistories($orderId, 1, 1);
-
-            $emsOrderId =  substr($order_history[0]['comment'], strpos($order_history[0]['comment'], ":") + 2);
-
-            $emsHelper = new EmsHelper($orderInfo['payment_code']);
-            $ems = $emsHelper->getClient($this->config);
-
-            if ($emsOrderId) {
-                $emsOrder = $ems->getOrder(
-                    $emsOrderId
-                );
-            }
-
-            if ($emsOrder['status'] != 'completed') {
-                echo '<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i>'.$this->language->get('wrong_order_status').'<button type="button" class="close" data-dismiss="alert">×</button>
+        } catch (Exception $e) {
+            echo '<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i>'.$e->getMessage().'<button type="button" class="close" data-dismiss="alert">×</button>
     </div>';
-                $this->log->write($orderInfo['payment_code'].': '.$this->language->get('wrong_order_status'));exit();
-            }
-
-            $refund_data = [
-                'amount' => $amount,
-                'description' => 'OrderID: #' . $orderId . ', Reason: ' . $return_reason['name']
-            ];
-
-            if ($orderInfo['payment_code'] == 'emspay_klarna-pay-later' || $orderInfo['payment_code'] == 'emspay_afterpay') {
-                if (!isset($emsOrder['transactions']['flags']['has-captures'])) {
-                    echo '<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i>'.$this->language->get('order_not_captured').'<button type="button" class="close" data-dismiss="alert">×</button>
-    </div>';
-                    $this->log->write($orderInfo['payment_code'].': '.$this->language->get('order_not_captured'));exit();
-                };
-                $orderInfo['total'] = $amount;
-                $refund_data['order_lines'] = $emsHelper->getOrderLines($orderInfo,
-                                                                        $orderInfo['payment_code'],
-                                                                        $emsHelper->getAmountInCents($orderInfo,
-                                                                                                     $this->currency));
-            }
-            $ems_refund_order = $ems->refundOrder(
-                $emsOrder['id'],
-                $refund_data
-            );
-            if (in_array($ems_refund_order['status'], ['error', 'cancelled', 'expired'])) {
-                if (isset(current($ems_refund_order['transactions'])['reason'])) {
-                    echo '<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i>'.current($ems_refund_order['transactions'])['reason'].'<button type="button" class="close" data-dismiss="alert">×</button>
-    </div>';
-                    $this->log->write($orderInfo['payment_code'].': '.current($ems_refund_order['transactions'])['reason']);exit();
-                }
-                echo '<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i>'.$this->language->get('refund_not_completed').'<button type="button" class="close" data-dismiss="alert">×</button>
-    </div>';
-                $this->log->write($orderInfo['payment_code'].': '.$this->language->get('refund_not_completed'));exit();
-            }
+            $this->log->write($e->getMessage());exit();
         }
     }
 }
