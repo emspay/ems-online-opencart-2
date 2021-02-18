@@ -52,3 +52,11 @@ $_['info_help_klarnapaylater_ip_filter'] = 'If entered, only for those IPs payme
 $_['entry_klarnapaylater_ip_filter'] = 'IP Filtering:';
 $_['entry_klarnapaylater_test_api_key'] = 'Test API Key:';
 $_['info_help_klarnapaylater_test_api_key'] = 'If entered this API key will be used for testing purposes.';
+
+/**
+ * Refund text
+ */
+$_['empty_price'] = 'The price is empty in the refund product information.';
+$_['wrong_order_status'] = 'Only completed orders can be refunded.';
+$_['order_not_captured'] = 'Refunds only possible when captured.';
+$_['refund_not_completed'] = 'Refund order is not completed.';

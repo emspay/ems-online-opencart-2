@@ -48,3 +48,10 @@ $_['error_missing_api_key'] = 'EMS Online API schlüssel ist erforderlich!';
 $_['info_help_api_key'] = 'Duplizieren Sie Ihre EMS Online API Schlüssel von Merchant Portal.';
 $_['info_help_total'] = 'Die Zahlungsmethode wird gezeigt wenn die kasse insgesamt der Mindestbetrag erreicht.';
 $_['info_plugin_not_configured'] = 'EMS Online: Tikkie Payment Request plugin ist nicht konfiguriert.';
+
+/**
+ * Refund text
+ */
+$_['empty_price'] = 'Der Preis ist in den Produktinformationen zur Rückerstattung leer.';
+$_['wrong_order_status'] = 'Nur abgeschlossene Bestellungen können erstattet werden.';
+$_['refund_not_completed'] = 'Rückerstattungsauftrag ist nicht abgeschlossen.';
