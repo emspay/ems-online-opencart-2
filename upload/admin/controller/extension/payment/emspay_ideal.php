@@ -316,17 +316,17 @@ class ControllerExtensionPaymentEmspayIdeal extends Controller
     public function refund_an_order()
     {
         try {
-            $return_id = $this->request->get['return_id'];
-            $this->load->model('sale/return');
-            $this->load->model('localisation/return_reason');
-            $return_info = $this->model_sale_return->getReturn($return_id);
-            $return_reason = $this->model_localisation_return_reason->getReturnReason($return_info["return_reason_id"]);
-
-            if (empty($return_info)) {
-                throw new Exception('Product return information is empty');
-            }
-
             if ($this->request->post['return_status_id'] == 3) {
+                $return_id = $this->request->get['return_id'];
+                $this->load->model('sale/return');
+                $this->load->model('localisation/return_reason');
+                $return_info = $this->model_sale_return->getReturn($return_id);
+                $return_reason = $this->model_localisation_return_reason->getReturnReason($return_info["return_reason_id"]);
+
+                if (empty($return_info)) {
+                    throw new Exception('Product return information is empty');
+                }
+
                 $orderId = $return_info['order_id'];
                 $product = $return_info['model'];
 
@@ -374,7 +374,7 @@ class ControllerExtensionPaymentEmspayIdeal extends Controller
                                                                             $emsHelper->getAmountInCents($orderInfo,
                                                                                                          $this->currency));
                 }
-                $ems_refund_order = $ems->refundOrder($emsOrder['id'],$refund_data);
+                $ems_refund_order = $ems->refundOrder($emsOrder['id'], $refund_data);
 
                 if (in_array($ems_refund_order['status'], ['error', 'cancelled', 'expired'])) {
                     if (isset(current($ems_refund_order['transactions'])['reason'])) {
@@ -384,9 +384,10 @@ class ControllerExtensionPaymentEmspayIdeal extends Controller
                 }
             }
         } catch (Exception $e) {
-            echo '<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i>'.$e->getMessage().'<button type="button" class="close" data-dismiss="alert">×</button>
+            echo '<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i>' . $e->getMessage() . '<button type="button" class="close" data-dismiss="alert">×</button>
     </div>';
-            $this->log->write($e->getMessage());exit();
+            $this->log->write($e->getMessage());
+            exit();
         }
     }
 }
