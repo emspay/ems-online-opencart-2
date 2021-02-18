@@ -55,3 +55,11 @@ $_['entry_afterpay_test_api_key'] = 'Test API schlüssel:';
 $_['info_help_afterpay_test_api_key'] = 'Wenn eingegeben, wird dieser API-Schlüssel nur zu Testzwecken verwendet werden.';
 $_['info_help_country_access'] = 'Damit AfterPay für jedes andere Land verwendet werden kann, fügen Sie einfach seinen Ländercode (in ISO 2-Norm) in das Feld &#34;Für AfterPay verfügbare Länder&#34; ein. <br> Beispiel: BE, NL, FR <br> Wenn das Feld leer ist, ist AfterPay fur alle Lander verfugbar.';
 $_['info_example_country_access'] = 'BE, NL, FR';
+
+/**
+ * Refund text
+ */
+$_['empty_price'] = 'Der Preis ist in den Produktinformationen zur Rückerstattung leer.';
+$_['wrong_order_status'] = 'Nur abgeschlossene Bestellungen können erstattet werden.';
+$_['order_not_captured'] = 'Rückerstattungen nur bei Erfassung möglich.';
+$_['refund_not_completed'] = 'Rückerstattungsauftrag ist nicht abgeschlossen.';

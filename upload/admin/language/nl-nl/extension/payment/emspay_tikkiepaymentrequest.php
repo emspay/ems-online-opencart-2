@@ -48,3 +48,10 @@ $_['error_missing_api_key'] = 'De EMS Online API Key is verplicht';
 $_['info_help_api_key'] = 'Kopieer uw EMS Online API key van uw merchant portal.';
 $_['info_help_total'] = 'De betaalmethode wordt alleen getoond als het totaalbedrag van een bestelling hoger is dan dit bedrag.';
 $_['info_plugin_not_configured'] = 'EMS Online: Tikkie Payment Request plugin is niet ingesteld.';
+
+/**
+ * Refund text
+ */
+$_['empty_price'] = 'De prijs is leeg in de productinformatie voor terugbetaling.';
+$_['wrong_order_status'] = 'Alleen voltooide bestellingen kunnen worden terugbetaald.';
+$_['refund_not_completed'] = 'De bestelling voor terugbetaling is niet voltooid.';

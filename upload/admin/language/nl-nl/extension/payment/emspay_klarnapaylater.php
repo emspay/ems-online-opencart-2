@@ -52,3 +52,11 @@ $_['info_help_klarnapaylater_ip_filter'] = 'U  kunt specifieke IP adressen opgev
 $_['entry_klarnapaylater_ip_filter'] = 'IP-Filteren:';
 $_['entry_klarnapaylater_test_api_key'] = 'Test API Key:';
 $_['info_help_klarnapaylater_test_api_key'] = 'Vul hier de API Key in van uw test webshop.';
+
+/**
+ * Refund text
+ */
+$_['empty_price'] = 'De prijs is leeg in de productinformatie voor terugbetaling.';
+$_['wrong_order_status'] = 'Alleen voltooide bestellingen kunnen worden terugbetaald.';
+$_['order_not_captured'] = 'Restitutie alleen mogelijk bij opname.';
+$_['refund_not_completed'] = 'De bestelling voor terugbetaling is niet voltooid.';
