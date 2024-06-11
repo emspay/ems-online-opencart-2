@@ -52,3 +52,7 @@
 ** 1.6.3 **
 
 * added refund functionality
+
+** 1.6.4 **
+
+* removed ideal issuers select
